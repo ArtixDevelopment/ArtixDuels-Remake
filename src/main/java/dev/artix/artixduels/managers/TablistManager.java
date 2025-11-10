@@ -74,35 +74,53 @@ public class TablistManager {
     public void updateTablist(Player player) {
         if (!enabled) return;
 
-        if (headerEnabled && headerLines != null) {
-            String header = String.join("\n", processHeaderFooter(headerLines, player));
-            setPlayerListHeader(player, ChatColor.translateAlternateColorCodes('&', header));
+        String header = "";
+        String footer = "";
+
+        if (headerEnabled && headerLines != null && !headerLines.isEmpty()) {
+            List<String> processedHeader = processHeaderFooter(headerLines, player);
+            StringBuilder headerBuilder = new StringBuilder();
+            for (int i = 0; i < processedHeader.size(); i++) {
+                if (i > 0) headerBuilder.append("\n");
+                headerBuilder.append(processedHeader.get(i));
+            }
+            header = ChatColor.translateAlternateColorCodes('&', headerBuilder.toString());
         }
 
-        if (footerEnabled && footerLines != null) {
-            String footer = String.join("\n", processHeaderFooter(footerLines, player));
-            setPlayerListFooter(player, ChatColor.translateAlternateColorCodes('&', footer));
+        if (footerEnabled && footerLines != null && !footerLines.isEmpty()) {
+            List<String> processedFooter = processHeaderFooter(footerLines, player);
+            StringBuilder footerBuilder = new StringBuilder();
+            for (int i = 0; i < processedFooter.size(); i++) {
+                if (i > 0) footerBuilder.append("\n");
+                footerBuilder.append(processedFooter.get(i));
+            }
+            footer = ChatColor.translateAlternateColorCodes('&', footerBuilder.toString());
         }
+
+        // Enviar header e footer juntos no mesmo packet
+        setPlayerListHeaderFooter(player, header, footer);
 
         updatePlayerName(player);
     }
 
     private List<String> processHeaderFooter(List<String> lines, Player player) {
-        return lines.stream().map(line -> {
-            String processed = ChatColor.translateAlternateColorCodes('&', line);
-            processed = processed.replace("{player}", player.getName());
-            processed = processed.replace("{online}", String.valueOf(Bukkit.getOnlinePlayers().size()));
-            processed = processed.replace("{max}", String.valueOf(Bukkit.getMaxPlayers()));
+        List<String> processed = new java.util.ArrayList<>();
+        for (String line : lines) {
+            String processedLine = ChatColor.translateAlternateColorCodes('&', line);
+            processedLine = processedLine.replace("{player}", player.getName());
+            processedLine = processedLine.replace("{online}", String.valueOf(Bukkit.getOnlinePlayers().size()));
+            processedLine = processedLine.replace("{max}", String.valueOf(Bukkit.getMaxPlayers()));
             
             PlayerStats stats = statsManager.getPlayerStats(player);
-            processed = processed.replace("{elo}", String.valueOf(stats.getElo()));
-            processed = processed.replace("{wins}", String.valueOf(stats.getWins()));
-            processed = processed.replace("{losses}", String.valueOf(stats.getLosses()));
-            processed = processed.replace("{winrate}", String.format("%.2f", stats.getWinRate()));
-            processed = processed.replace("{ping}", String.valueOf(getPing(player)));
+            processedLine = processedLine.replace("{elo}", String.valueOf(stats.getElo()));
+            processedLine = processedLine.replace("{wins}", String.valueOf(stats.getWins()));
+            processedLine = processedLine.replace("{losses}", String.valueOf(stats.getLosses()));
+            processedLine = processedLine.replace("{winrate}", String.format("%.2f", stats.getWinRate()));
+            processedLine = processedLine.replace("{ping}", String.valueOf(getPing(player)));
             
-            return processed;
-        }).collect(java.util.stream.Collectors.toList());
+            processed.add(processedLine);
+        }
+        return processed;
     }
 
     private void updatePlayerName(Player player) {
@@ -183,43 +201,46 @@ public class TablistManager {
         }
     }
 
-    private void setPlayerListHeader(Player player, String header) {
+    /**
+     * Define o header e footer do tablist para um jogador.
+     * O packet PacketPlayOutPlayerListHeaderFooter requer ambos header e footer.
+     */
+    private void setPlayerListHeaderFooter(Player player, String header, String footer) {
         try {
             Object craftPlayer = player.getClass().getMethod("getHandle").invoke(player);
             String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+            
+            // Escapar caracteres especiais para JSON
+            String escapedHeader = header.replace("\\", "\\\\")
+                                         .replace("\"", "\\\"")
+                                         .replace("\n", "\\n");
+            String escapedFooter = footer.replace("\\", "\\\\")
+                                         .replace("\"", "\\\"")
+                                         .replace("\n", "\\n");
+            
             Class<?> packetClass = Class.forName("net.minecraft.server." + version + ".PacketPlayOutPlayerListHeaderFooter");
             Object packet = packetClass.newInstance();
             
             Class<?> chatSerializerClass = Class.forName("net.minecraft.server." + version + ".ChatSerializer");
-            Object chatComponent = chatSerializerClass.getMethod("a", String.class).invoke(null, "{\"text\":\"" + header.replace("\"", "\\\"") + "\"}");
             
+            // Definir header
+            Object headerComponent = chatSerializerClass.getMethod("a", String.class).invoke(null, "{\"text\":\"" + escapedHeader + "\"}");
             java.lang.reflect.Field a = packetClass.getDeclaredField("a");
             a.setAccessible(true);
-            a.set(packet, chatComponent);
+            a.set(packet, headerComponent);
             
-            Object connection = craftPlayer.getClass().getField("playerConnection").get(craftPlayer);
-            connection.getClass().getMethod("sendPacket", Class.forName("net.minecraft.server." + version + ".Packet")).invoke(connection, packet);
-        } catch (Exception e) {
-        }
-    }
-
-    private void setPlayerListFooter(Player player, String footer) {
-        try {
-            Object craftPlayer = player.getClass().getMethod("getHandle").invoke(player);
-            String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-            Class<?> packetClass = Class.forName("net.minecraft.server." + version + ".PacketPlayOutPlayerListHeaderFooter");
-            Object packet = packetClass.newInstance();
-            
-            Class<?> chatSerializerClass = Class.forName("net.minecraft.server." + version + ".ChatSerializer");
-            Object chatComponent = chatSerializerClass.getMethod("a", String.class).invoke(null, "{\"text\":\"" + footer.replace("\"", "\\\"") + "\"}");
-            
+            // Definir footer
+            Object footerComponent = chatSerializerClass.getMethod("a", String.class).invoke(null, "{\"text\":\"" + escapedFooter + "\"}");
             java.lang.reflect.Field b = packetClass.getDeclaredField("b");
             b.setAccessible(true);
-            b.set(packet, chatComponent);
+            b.set(packet, footerComponent);
             
+            // Enviar packet
             Object connection = craftPlayer.getClass().getField("playerConnection").get(craftPlayer);
             connection.getClass().getMethod("sendPacket", Class.forName("net.minecraft.server." + version + ".Packet")).invoke(connection, packet);
         } catch (Exception e) {
+            Bukkit.getLogger().warning("[ArtixDuels] Erro ao definir tablist para " + player.getName() + ": " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

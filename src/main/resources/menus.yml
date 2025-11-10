@@ -1,172 +1,439 @@
 menus:
   # Menu de Configuração Principal
   main-config:
-    title: "&6&lMenu de Configuração"
+    title: "&c&lADMIN &7» &e&lConfiguração"
     size: 54
     items:
+      border-top:
+        slot: 0
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
+      border-left:
+        slot: 9
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-right:
+        slot: 17
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-bottom:
+        slot: 45
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
       kits:
-        slot: 10
+        slot: 19
         material: DIAMOND_SWORD
-        name: "&6&lKits"
+        name: "&6&lKITS"
         lore:
-          - "&7Gerencie os kits de duelo"
-          - "&7Clique para abrir o menu de kits"
+          - " "
+          - "&7Gerencie todos os kits"
+          - "&7de duelo disponíveis"
+          - " "
+          - "&eClique para abrir"
         action: open-kits-menu
       
       arenas:
-        slot: 12
+        slot: 21
         material: GRASS
-        name: "&6&lArenas"
+        name: "&a&lARENAS"
         lore:
-          - "&7Gerencie as arenas de duelo"
-          - "&7Clique para abrir o menu de arenas"
+          - " "
+          - "&7Gerencie todas as arenas"
+          - "&7de duelo do servidor"
+          - " "
+          - "&eClique para abrir"
         action: open-arenas-menu
       
       npcs:
-        slot: 14
+        slot: 23
         material: SKULL_ITEM
         data: 3
-        name: "&6&lNPCs"
+        name: "&e&lNPCS"
         lore:
-          - "&7Gerencie os NPCs de duelo"
-          - "&7Clique para abrir o menu de NPCs"
+          - " "
+          - "&7Gerencie os NPCs"
+          - "&7de seleção de modos"
+          - " "
+          - "&eClique para abrir"
         action: open-npcs-menu
       
+      # Item de Modos
       modes:
-        slot: 16
+        slot: 25
         material: BOOK
-        name: "&6&lModos"
+        name: "&b&lMODOS"
         lore:
-          - "&7Gerencie os modos de duelo"
-          - "&7Clique para abrir o menu de modos"
+          - " "
+          - "&7Gerencie os modos"
+          - "&7de duelo disponíveis"
+          - " "
+          - "&eClique para abrir"
         action: open-modes-menu
       
+      # Item de Recarregar
       reload:
         slot: 40
         material: REDSTONE
-        name: "&c&lRecarregar"
+        name: "&c&lRECARREGAR"
         lore:
-          - "&7Recarrega todas as configurações"
-          - "&7Clique para recarregar"
+          - " "
+          - "&7Recarrega todas as"
+          - "&7configurações do plugin"
+          - " "
+          - "&eClique para recarregar"
         action: reload-config
       
+      # Item de Fechar
       close:
         slot: 49
-        material: BARRIER
-        name: "&cFechar"
+        material: STAINED_GLASS_PANE
+        data: 14
+        name: "&c&lFECHAR"
         lore:
-          - "&7Clique para fechar"
+          - " "
+          - "&7Fecha este menu"
+          - " "
         action: close-menu
 
   # Menu de Kits
   kits:
-    title: "&6&lKits"
+    title: "&6&lKITS &7» &e&lGerenciamento"
     size: 54
     items:
+      border-top:
+        slot: 0
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
+      border-left:
+        slot: 9
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-right:
+        slot: 17
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-bottom:
+        slot: 45
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
       create-kit:
         slot: 45
         material: EMERALD
-        name: "&aCriar Kit"
+        name: "&a&lCRIAR KIT"
         lore:
-          - "&7Use /kit create <nome>"
-          - "&7para criar um kit"
+          - "&8&m                              "
+          - "&7Use o comando:"
+          - "&e/kit create <nome>"
+          - "&7para criar um novo kit"
+          - "&8&m                              "
         action: create-kit-hint
       
       back:
         slot: 49
-        material: ARROW
-        name: "&cVoltar"
+        material: PAPER
+        name: "&e&lVOLTAR"
         lore:
-          - "&7Clique para voltar"
+          - "&8&m                              "
+          - "&7Retorna ao menu principal"
+          - "&8&m                              "
         action: open-main-menu
       
       close:
         slot: 53
-        material: BARRIER
-        name: "&cFechar"
+        material: STAINED_GLASS_PANE
+        data: 14
+        name: "&c&lFECHAR"
         lore:
-          - "&7Clique para fechar"
+          - "&8&m                              "
+          - "&7Fecha este menu"
+          - "&8&m                              "
         action: close-menu
 
-  # Menu de Arenas
   arenas:
-    title: "&6&lArenas"
+    title: "&a&lARENAS &7» &e&lGerenciamento"
     size: 54
     items:
+      border-top:
+        slot: 0
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
+      border-left:
+        slot: 9
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-right:
+        slot: 17
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-bottom:
+        slot: 45
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
       create-arena:
         slot: 45
         material: EMERALD
-        name: "&aCriar Arena"
+        name: "&a&lCRIAR ARENA"
         lore:
-          - "&7Use /arena create <nome>"
-          - "&7para criar uma arena"
+          - "&8&m                              "
+          - "&7Use o comando:"
+          - "&e/arena create <nome>"
+          - "&7para criar uma nova arena"
+          - "&8&m                              "
         action: create-arena-hint
       
       back:
         slot: 49
-        material: ARROW
-        name: "&cVoltar"
+        material: PAPER
+        name: "&e&lVOLTAR"
         lore:
-          - "&7Clique para voltar"
+          - "&8&m                              "
+          - "&7Retorna ao menu principal"
+          - "&8&m                              "
         action: open-main-menu
       
       close:
         slot: 53
-        material: BARRIER
-        name: "&cFechar"
+        material: STAINED_GLASS_PANE
+        data: 14
+        name: "&c&lFECHAR"
         lore:
-          - "&7Clique para fechar"
+          - "&8&m                              "
+          - "&7Fecha este menu"
+          - "&8&m                              "
         action: close-menu
 
-  # Menu de Seleção de Modo de Duelo
   duel-mode-selection:
-    title: "&6&lModo de Duelo"
+    title: "&8&l[ &6&lDUELO &8&l] &7Selecionar Modo"
     size: 54
     items:
+      border-top:
+        slot: 0
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
+      border-left:
+        slot: 9
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-right:
+        slot: 17
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-bottom:
+        slot: 45
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
       close:
         slot: 49
-        material: BARRIER
-        name: "&cFechar"
+        material: STAINED_GLASS_PANE
+        data: 14
+        name: "&c&lFECHAR"
         lore:
-          - "&7Clique para fechar"
+          - "&8&m                              "
+          - "&7Fecha este menu"
+          - "&8&m                              "
         action: close-menu
 
-  # Menu de Seleção de Modo de Duelo (Queue)
   queue-mode-selection:
-    title: "&6&lSelecionar Modo"
+    title: "&b&lQUEUE &7» &e&lProcurar Partida"
     size: 54
     items:
+      border-top:
+        slot: 0
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
+      border-left:
+        slot: 9
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-right:
+        slot: 17
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-bottom:
+        slot: 45
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
       close:
         slot: 49
-        material: BARRIER
-        name: "&cFechar"
+        material: STAINED_GLASS_PANE
+        data: 14
+        name: "&c&lFECHAR"
         lore:
-          - "&7Clique para fechar"
+          - "&8&m                              "
+          - "&7Fecha este menu"
+          - "&8&m                              "
         action: close-menu
 
-  # Menu de Perfil
   profile:
-    title: "&6&lPerfil"
+    title: "&8&l[ &6&lPERFIL &8&l] &7Estatísticas"
     size: 54
     items:
+      border-top:
+        slot: 0
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
+      border-left:
+        slot: 9
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-right:
+        slot: 17
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-bottom:
+        slot: 45
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
       close:
         slot: 49
-        material: BARRIER
-        name: "&cFechar"
+        material: STAINED_GLASS_PANE
+        data: 14
+        name: "&c&lFECHAR"
         lore:
-          - "&7Clique para fechar"
+          - "&8&m                              "
+          - "&7Fecha este menu"
+          - "&8&m                              "
         action: close-menu
 
-  # Menu de Seleção de Modo do Scoreboard
   scoreboard-mode-selection:
-    title: "&6&lModo Scoreboard"
+    title: "&6&lSCOREBOARD &7» &e&lModo"
     size: 54
     items:
+      border-top:
+        slot: 0
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
+      border-left:
+        slot: 9
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-right:
+        slot: 17
+        material: STAINED_GLASS_PANE
+        data: 3
+        name: " "
+        lore: []
+        action: none
+      
+      border-bottom:
+        slot: 45
+        material: STAINED_GLASS_PANE
+        data: 11
+        name: " "
+        lore: []
+        action: none
+      
       close:
         slot: 49
-        material: BARRIER
-        name: "&cFechar"
+        material: STAINED_GLASS_PANE
+        data: 14
+        name: "&c&lFECHAR"
         lore:
-          - "&7Clique para fechar"
+          - "&8&m                              "
+          - "&7Fecha este menu"
+          - "&8&m                              "
         action: close-menu
-

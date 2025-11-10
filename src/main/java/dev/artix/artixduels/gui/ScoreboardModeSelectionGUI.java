@@ -40,6 +40,9 @@ public class ScoreboardModeSelectionGUI implements Listener {
         int size = menuData != null ? menuData.getSize() : 54;
         Inventory gui = Bukkit.createInventory(null, size, title);
         
+        // Preencher bordas do menu
+        dev.artix.artixduels.utils.MenuUtils.fillMenuBorders(gui);
+        
         dev.artix.artixduels.models.DuelMode activeMode = preferences.getPlayerActiveMode(player.getUniqueId());
         
         int slot = 0;
@@ -73,8 +76,11 @@ public class ScoreboardModeSelectionGUI implements Listener {
             }
         } else {
             // Fallback
-            ItemStack closeItem = createMenuItem(Material.BARRIER, messageManager.getMessageNoPrefix("gui.close"), 
-                "", "&7Clique para fechar");
+            ItemStack closeItem = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            ItemMeta closeMeta = closeItem.getItemMeta();
+            closeMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', messageManager.getMessageNoPrefix("gui.close")));
+            closeMeta.setLore(java.util.Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7Clique para fechar")));
+            closeItem.setItemMeta(closeMeta);
             gui.setItem(49, closeItem);
         }
         

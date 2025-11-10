@@ -1,6 +1,6 @@
 package dev.artix.artixduels;
 
-import dev.artix.artixduels.commands.*;
+import dev.artix.artixduels.commands.CommandRegistry;
 import dev.artix.artixduels.database.DatabaseManager;
 import dev.artix.artixduels.database.IDuelHistoryDAO;
 import dev.artix.artixduels.database.IStatsDAO;
@@ -125,7 +125,7 @@ public final class ArtixDuels extends JavaPlugin {
         profileItemListener.setDuelManager(duelManager);
 
         getServer().getPluginManager().registerEvents(new DuelListener(duelManager, scoreboardManager), this);
-        getServer().getPluginManager().registerEvents(new TablistListener(tablistManager), this);
+        getServer().getPluginManager().registerEvents(new TablistListener(tablistManager, this), this);
         getServer().getPluginManager().registerEvents(profileItemListener, this);
         getServer().getPluginManager().registerEvents(new LobbyProtectionListener(this, duelManager), this);
         getServer().getPluginManager().registerEvents(new HologramListener(this), this);

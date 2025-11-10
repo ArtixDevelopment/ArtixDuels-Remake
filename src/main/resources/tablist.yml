@@ -5,7 +5,7 @@ tablist:
 header:
   enabled: true
   lines:
-    - "&b&lARTIXDUELS"
+    - "&b&lARTIX-DUELS"
     - "&7Melhor plugin de Duels do Minecraft"
     - ""
 

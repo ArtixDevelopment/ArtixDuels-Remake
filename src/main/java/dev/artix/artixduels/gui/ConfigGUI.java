@@ -63,9 +63,12 @@ public class ConfigGUI implements Listener {
         }
         Inventory gui = Bukkit.createInventory(null, menuData.getSize(), title);
         
+        // Preencher bordas do menu
+        fillMenuBorders(gui);
+        
         for (MenuManager.MenuItemData itemData : menuData.getItems()) {
             ItemStack item = menuManager.createMenuItem("main-config", itemData.getName());
-            if (item != null) {
+            if (item != null && !itemData.getName().equals("border")) {
                 gui.setItem(itemData.getSlot(), item);
             }
         }
@@ -82,6 +85,9 @@ public class ConfigGUI implements Listener {
         int size = menuData != null ? menuData.getSize() : 54;
         Inventory gui = Bukkit.createInventory(null, size, title);
         
+        // Preencher bordas do menu
+        fillMenuBorders(gui);
+        
         int slot = 0;
         for (Map.Entry<String, Kit> entry : kitManager.getKits().entrySet()) {
             if (slot >= 45) break;
@@ -96,7 +102,7 @@ public class ConfigGUI implements Listener {
         if (menuData != null) {
             for (MenuManager.MenuItemData itemData : menuData.getItems()) {
                 ItemStack item = menuManager.createMenuItem("kits", itemData.getName());
-                if (item != null) {
+                if (item != null && !itemData.getName().equals("border")) {
                     gui.setItem(itemData.getSlot(), item);
                 }
             }
@@ -106,7 +112,7 @@ public class ConfigGUI implements Listener {
                 "", "&7Clique para criar um novo kit");
             gui.setItem(45, createItem);
             
-            ItemStack backItem = createMenuItem(Material.ARROW, messageManager.getMessageNoPrefix("gui.back"), 
+            ItemStack backItem = createMenuItem(Material.PAPER, messageManager.getMessageNoPrefix("gui.back"), 
                 "", "&7Clique para voltar");
             gui.setItem(49, backItem);
         }
@@ -123,6 +129,9 @@ public class ConfigGUI implements Listener {
         int size = menuData != null ? menuData.getSize() : 54;
         Inventory gui = Bukkit.createInventory(null, size, title);
         
+        // Preencher bordas do menu
+        fillMenuBorders(gui);
+        
         int slot = 0;
         for (Map.Entry<String, Arena> entry : arenaManager.getArenas().entrySet()) {
             if (slot >= 45) break;
@@ -138,7 +147,7 @@ public class ConfigGUI implements Listener {
         if (menuData != null) {
             for (MenuManager.MenuItemData itemData : menuData.getItems()) {
                 ItemStack item = menuManager.createMenuItem("arenas", itemData.getName());
-                if (item != null) {
+                if (item != null && !itemData.getName().equals("border")) {
                     gui.setItem(itemData.getSlot(), item);
                 }
             }
@@ -148,7 +157,7 @@ public class ConfigGUI implements Listener {
                 "", "&7Clique para criar uma nova arena");
             gui.setItem(45, createItem);
             
-            ItemStack backItem = createMenuItem(Material.ARROW, messageManager.getMessageNoPrefix("gui.back"), 
+            ItemStack backItem = createMenuItem(Material.PAPER, messageManager.getMessageNoPrefix("gui.back"), 
                 "", "&7Clique para voltar");
             gui.setItem(49, backItem);
         }
@@ -321,11 +330,11 @@ public class ConfigGUI implements Listener {
             "", "&7Clique para definir sua posição como spawn de espectador");
         gui.setItem(14, setSpectatorSpawn);
         
-        ItemStack deleteItem = createMenuItem(Material.BARRIER, "&cDeletar Arena", 
+        ItemStack deleteItem = createMenuItem(Material.STAINED_GLASS_PANE, "&cDeletar Arena", 
             "", "&7Clique para deletar esta arena");
         gui.setItem(16, deleteItem);
         
-        ItemStack backItem = createMenuItem(Material.ARROW, messageManager.getMessageNoPrefix("gui.back"), 
+        ItemStack backItem = createMenuItem(Material.PAPER, messageManager.getMessageNoPrefix("gui.back"), 
             "", "&7Clique para voltar");
         gui.setItem(22, backItem);
         
@@ -380,6 +389,10 @@ public class ConfigGUI implements Listener {
 
     public String getEditingArena(Player player) {
         return editingArenas.get(player);
+    }
+
+    private void fillMenuBorders(Inventory gui) {
+        dev.artix.artixduels.utils.MenuUtils.fillMenuBorders(gui);
     }
 }
 

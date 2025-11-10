@@ -30,8 +30,8 @@ public class DuelCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            player.sendMessage("§cUso: /duelo <jogador>");
-            player.sendMessage("§cUso: /duelo queue [modo] (entrar na fila de matchmaking)");
+            player.sendMessage("§cUso: /duel <jogador>");
+            player.sendMessage("§cUso: /duel queue [modo] (entrar na fila de matchmaking)");
             return true;
         }
 

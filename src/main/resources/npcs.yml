@@ -3,7 +3,7 @@ npcs:
   
   bedfight:
     mode: "BEDFIGHT"
-    display-name: "&c&lBedFight"
+    display-name: "&b&lBedFight"
     skin: "BedFight"
     location: "world,0,100,0,0,0"
     look-close:
@@ -22,13 +22,12 @@ npcs:
       offset-x: 0.0
       offset-z: 0.0
       lines:
-        - "&c&lBEDFIGHT"
-        - " "
-        - "&eClique aqui!"
+        - "&b&lBEDFIGHT"
+        - "&e{players-in-duel} jogando"
   
   stickfight:
     mode: "STICKFIGHT"
-    display-name: "&a&lStickFight"
+    display-name: "&b&lStickFight"
     skin: "StickFight"
     location: "world,5,100,0,0,0"
     look-close:
@@ -43,7 +42,7 @@ npcs:
       offset-x: 0.0
       offset-z: 0.0
       lines:
-        - "&a&lSTICKFIGHT"
+        - "&b&lSTICKFIGHT"
         - "&e{players-in-duel} jogando"
   
   soup:
@@ -68,7 +67,7 @@ npcs:
   
   souprecraft:
     mode: "SOUPRECRAFT"
-    display-name: "&d&lSoupRecraft"
+    display-name: "&b&lSoup-Recraft"
     skin: "SoupRecraft"
     location: "world,15,100,0,0,0"
     look-close:
@@ -83,12 +82,12 @@ npcs:
       offset-x: 0.0
       offset-z: 0.0
       lines:
-        - "&d&lSOUPRECRAFT"
+        - "&b&lSOUP-RECRAFT"
         - "&e{players-in-duel} jogando"
   
   gladiator:
     mode: "GLADIATOR"
-    display-name: "&6&lGladiator"
+    display-name: "&b&lGladiator"
     skin: "Gladiator"
     location: "world,20,100,0,0,0"
     look-close:
@@ -103,12 +102,12 @@ npcs:
       offset-x: 0.0
       offset-z: 0.0
       lines:
-        - "&6&lGLADIATOR"
+        - "&b&lGLADIATOR"
         - "&e{players-in-duel} jogando"
   
   fastob:
     mode: "FASTOB"
-    display-name: "&e&lFastOB"
+    display-name: "&b&lFastOB"
     skin: "FastOB"
     location: "world,25,100,0,0,0"
     look-close:
@@ -123,12 +122,12 @@ npcs:
       offset-x: 0.0
       offset-z: 0.0
       lines:
-        - "&e&lFASTOB"
+        - "&b&lFASTOB"
         - "&e{players-in-duel} jogando"
   
   boxing:
     mode: "BOXING"
-    display-name: "&c&lBoxing"
+    display-name: "&b&lBoxing"
     skin: "Boxing"
     location: "world,30,100,0,0,0"
     look-close:
@@ -143,12 +142,12 @@ npcs:
       offset-x: 0.0
       offset-z: 0.0
       lines:
-        - "&c&lBOXING"
+        - "&b&lBOXING"
         - "&e{players-in-duel} jogando"
   
   fireballfight:
     mode: "FIREBALLFIGHT"
-    display-name: "&4&lFireballFight"
+    display-name: "&b&lFireball-Fight"
     skin: "FireballFight"
     location: "world,35,100,0,0,0"
     look-close:
@@ -163,12 +162,12 @@ npcs:
       offset-x: 0.0
       offset-z: 0.0
       lines:
-        - "&4&lFIREBALLFIGHT"
+        - "&b&lFIREBALL-FIGHT"
         - "&e{players-in-duel} jogando"
   
   sumo:
     mode: "SUMO"
-    display-name: "&f&lSumo"
+    display-name: "&b&lSumo"
     skin: "Sumo"
     location: "world,40,100,0,0,0"
     look-close:
@@ -183,12 +182,12 @@ npcs:
       offset-x: 0.0
       offset-z: 0.0
       lines:
-        - "&f&lSUMO"
+        - "&b&lSUMO"
         - "&e{players-in-duel} jogando"
   
   battlerush:
     mode: "BATTLERUSH"
-    display-name: "&5&lBattleRush"
+    display-name: "&b&lBattleRush"
     skin: "BattleRush"
     location: "world,45,100,0,0,0"
     look-close:
@@ -203,12 +202,12 @@ npcs:
       offset-x: 0.0
       offset-z: 0.0
       lines:
-        - "&5&lBATTLERUSH"
+        - "&b&lBATTLERUSH"
         - "&e{players-in-duel} jogando"
   
   tntsumo:
     mode: "TNTSUMO"
-    display-name: "&8&lTNTSumo"
+    display-name: "&b&lTNT-Sumo"
     skin: "TNTSumo"
     location: "world,50,100,0,0,0"
     look-close:
@@ -223,6 +222,6 @@ npcs:
       offset-x: 0.0
       offset-z: 0.0
       lines:
-        - "&8&lTNTSUMO"
+        - "&b&lTNT-SUMO"
         - "&e{players-in-duel} jogando"
 

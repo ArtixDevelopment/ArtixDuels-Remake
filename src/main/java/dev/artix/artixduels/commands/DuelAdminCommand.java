@@ -10,6 +10,7 @@ import dev.artix.artixduels.managers.StatsManager;
 import dev.artix.artixduels.models.Arena;
 import dev.artix.artixduels.models.Kit;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -136,7 +137,7 @@ public class DuelAdminCommand implements CommandExecutor {
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage("§6=== Comandos Admin ===");
+        sender.sendMessage("§7§m----§f §bComandos Admin §7§m----§f");
         sender.sendMessage("§e/dueladmin menu §7- Abre o menu de configuração");
         sender.sendMessage("§e/dueladmin reload §7- Recarrega a configuração");
         sender.sendMessage("§e/dueladmin setarena <nome> §7- Define uma arena na sua localização");

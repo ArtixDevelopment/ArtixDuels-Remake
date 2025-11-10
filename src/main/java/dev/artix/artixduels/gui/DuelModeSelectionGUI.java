@@ -62,6 +62,9 @@ public class DuelModeSelectionGUI implements Listener {
         int size = menuData != null ? menuData.getSize() : 54;
         Inventory gui = Bukkit.createInventory(null, size, title);
         
+        // Preencher bordas do menu
+        dev.artix.artixduels.utils.MenuUtils.fillMenuBorders(gui);
+        
         int slot = 0;
         for (DuelMode mode : DuelMode.values()) {
             if (slot >= 45) break;
@@ -81,8 +84,13 @@ public class DuelModeSelectionGUI implements Listener {
             }
         } else {
             // Fallback
-            ItemStack closeItem = createMenuItem(Material.BARRIER, messageManager.getMessageNoPrefix("gui.close"), 
-                "", "&7Clique para fechar");
+            ItemStack closeItem = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            ItemMeta closeMeta = closeItem.getItemMeta();
+            closeMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', messageManager.getMessageNoPrefix("gui.close")));
+            closeMeta.setLore(java.util.Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7"), 
+                ChatColor.translateAlternateColorCodes('&', "&7Clique para fechar o menu"), 
+                ChatColor.translateAlternateColorCodes('&', "&7")));
+            closeItem.setItemMeta(closeMeta);
             gui.setItem(49, closeItem);
         }
         
@@ -234,6 +242,39 @@ public class DuelModeSelectionGUI implements Listener {
     }
 
     public void openQueueMenu(Player player) {
+        if (menuManager == null) {
+            // Fallback se menuManager não estiver inicializado
+            String title = ChatColor.translateAlternateColorCodes('&', "&6&lProcurar Partida");
+            if (title.length() > 32) {
+                title = title.substring(0, 32);
+            }
+            Inventory gui = Bukkit.createInventory(null, 54, title);
+            
+            // Preencher bordas do menu
+            dev.artix.artixduels.utils.MenuUtils.fillMenuBorders(gui);
+            
+            int slot = 0;
+            for (DuelMode mode : DuelMode.values()) {
+                if (slot >= 45) break;
+                
+                ItemStack modeItem = createQueueModeItem(mode);
+                gui.setItem(slot, modeItem);
+                slot++;
+            }
+            
+            ItemStack closeItem = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            ItemMeta closeMeta = closeItem.getItemMeta();
+            closeMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', messageManager != null ? messageManager.getMessageNoPrefix("gui.close") : "&c&lFechar"));
+            closeMeta.setLore(java.util.Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7"), 
+                ChatColor.translateAlternateColorCodes('&', "&7Clique para fechar o menu"), 
+                ChatColor.translateAlternateColorCodes('&', "&7")));
+            closeItem.setItemMeta(closeMeta);
+            gui.setItem(49, closeItem);
+            
+            player.openInventory(gui);
+            return;
+        }
+        
         MenuManager.MenuData menuData = menuManager.getMenu("queue-mode-selection");
         String title = menuData != null ? menuData.getTitle() : "&6&lProcurar Partida";
         if (title.length() > 32) {
@@ -241,6 +282,9 @@ public class DuelModeSelectionGUI implements Listener {
         }
         int size = menuData != null ? menuData.getSize() : 54;
         Inventory gui = Bukkit.createInventory(null, size, title);
+        
+        // Preencher bordas do menu
+        dev.artix.artixduels.utils.MenuUtils.fillMenuBorders(gui);
         
         int slot = 0;
         for (DuelMode mode : DuelMode.values()) {
@@ -261,8 +305,13 @@ public class DuelModeSelectionGUI implements Listener {
             }
         } else {
             // Fallback
-            ItemStack closeItem = createMenuItem(Material.BARRIER, messageManager.getMessageNoPrefix("gui.close"), 
-                "", "&7Clique para fechar");
+            ItemStack closeItem = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            ItemMeta closeMeta = closeItem.getItemMeta();
+            closeMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', messageManager.getMessageNoPrefix("gui.close")));
+            closeMeta.setLore(java.util.Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7"), 
+                ChatColor.translateAlternateColorCodes('&', "&7Clique para fechar o menu"), 
+                ChatColor.translateAlternateColorCodes('&', "&7")));
+            closeItem.setItemMeta(closeMeta);
             gui.setItem(49, closeItem);
         }
         

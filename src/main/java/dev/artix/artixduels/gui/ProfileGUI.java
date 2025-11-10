@@ -35,6 +35,9 @@ public class ProfileGUI implements Listener {
         }
         int size = menuData != null ? menuData.getSize() : 54;
         Inventory gui = Bukkit.createInventory(null, size, title);
+        
+        // Preencher bordas do menu
+        dev.artix.artixduels.utils.MenuUtils.fillMenuBorders(gui);
 
         PlayerStats stats = statsManager.getPlayerStats(player);
         
@@ -80,7 +83,13 @@ public class ProfileGUI implements Listener {
             }
         } else {
             // Fallback
-            ItemStack closeItem = createMenuItem(Material.BARRIER, "&cFechar", "", "&7Clique para fechar");
+            ItemStack closeItem = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            ItemMeta closeMeta = closeItem.getItemMeta();
+            closeMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&l✖ &c&lFechar"));
+            closeMeta.setLore(java.util.Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7"), 
+                ChatColor.translateAlternateColorCodes('&', "&7Clique para fechar o menu"), 
+                ChatColor.translateAlternateColorCodes('&', "&7")));
+            closeItem.setItemMeta(closeMeta);
             gui.setItem(49, closeItem);
         }
 

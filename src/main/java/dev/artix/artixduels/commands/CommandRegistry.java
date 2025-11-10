@@ -5,23 +5,33 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.plugin.SimplePluginManager;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Classe responsável por registrar todos os comandos do plugin programaticamente.
+ * Organiza os comandos em categorias: Player e Admin.
+ */
 public class CommandRegistry {
-    private ArtixDuels plugin;
-    private CommandMap commandMap;
+    private final ArtixDuels plugin;
+    private final CommandMap commandMap;
 
     public CommandRegistry(ArtixDuels plugin) {
         this.plugin = plugin;
         this.commandMap = getCommandMap();
     }
 
+    /**
+     * Obtém o CommandMap do servidor usando reflection.
+     * @return CommandMap ou null se houver erro
+     */
     private CommandMap getCommandMap() {
         try {
-            org.bukkit.plugin.SimplePluginManager pluginManager = (org.bukkit.plugin.SimplePluginManager) plugin.getServer().getPluginManager();
+            SimplePluginManager pluginManager = (SimplePluginManager) plugin.getServer().getPluginManager();
             Field commandMapField = pluginManager.getClass().getDeclaredField("commandMap");
             commandMapField.setAccessible(true);
             return (CommandMap) commandMapField.get(pluginManager);
@@ -32,7 +42,17 @@ public class CommandRegistry {
         }
     }
 
-    public void registerCommand(String name, String description, List<String> aliases, String permission, CommandExecutor executor, TabCompleter tabCompleter) {
+    /**
+     * Registra um comando no CommandMap.
+     * @param name Nome do comando
+     * @param description Descrição do comando
+     * @param aliases Lista de aliases
+     * @param permission Permissão necessária (null se não houver)
+     * @param executor Executor do comando
+     * @param tabCompleter TabCompleter do comando (null se não houver)
+     */
+    public void registerCommand(String name, String description, List<String> aliases, 
+                                 String permission, CommandExecutor executor, TabCompleter tabCompleter) {
         if (commandMap == null) {
             plugin.getLogger().warning("CommandMap não disponível, não foi possível registrar o comando: " + name);
             return;
@@ -64,87 +84,108 @@ public class CommandRegistry {
         commandMap.register("artixduels", command);
     }
 
+    /**
+     * Registra todos os comandos do plugin.
+     * Organizados por categoria: Player e Admin.
+     */
     public void registerAllCommands() {
-        // Duelo
+        registerPlayerCommands();
+        registerAdminCommands();
+        plugin.getLogger().info("Todos os comandos foram registrados com sucesso!");
+    }
+
+    /**
+     * Registra comandos disponíveis para todos os jogadores.
+     */
+    private void registerPlayerCommands() {
+        // Comando principal de duelos
         registerCommand("duelo", "Comando principal de duelos",
-            java.util.Arrays.asList("duel", "duelos"), null,
-            new DuelCommand(plugin, plugin.getDuelManager(), plugin.getKitManager(), plugin.getArenaManager(), plugin.getDuelModeSelectionGUI()),
+            Arrays.asList("duel", "duelos"), null,
+            new DuelCommand(plugin, plugin.getDuelManager(), plugin.getKitManager(), 
+                          plugin.getArenaManager(), plugin.getDuelModeSelectionGUI()),
             new DuelTabCompleter());
 
-        // Accept
+        // Aceitar convite
         registerCommand("accept", "Aceitar um convite de duelo",
-            java.util.Arrays.asList("aceitar"), null,
+            Arrays.asList("aceitar"), null,
             new AcceptCommand(plugin.getDuelManager()), null);
 
-        // Deny
+        // Recusar convite
         registerCommand("deny", "Recusar um convite de duelo",
-            java.util.Arrays.asList("recusar"), null,
+            Arrays.asList("recusar"), null,
             new DenyCommand(plugin.getDuelManager()), null);
 
-        // Stats
+        // Estatísticas
         registerCommand("stats", "Ver estatísticas de duelos",
-            java.util.Arrays.asList("estatisticas", "estatisticas"), null,
+            Arrays.asList("estatisticas", "estatisticas"), null,
             new StatsCommand(plugin.getStatsManager()), null);
 
-        // Spectate
+        // Espectar duelo
         registerCommand("spectate", "Espectar um duelo",
-            java.util.Arrays.asList("espectar", "spec"), null,
+            Arrays.asList("espectar", "spec"), null,
             new SpectateCommand(plugin.getDuelManager(), plugin.getSpectatorManager()), null);
 
-        // History
+        // Histórico
         registerCommand("history", "Ver histórico de duelos",
-            java.util.Arrays.asList("historico"), null,
+            Arrays.asList("historico"), null,
             new HistoryCommand(plugin.getHistoryDAO()), null);
 
         // Scoreboard
         registerCommand("scoreboard", "Configurar modos do scoreboard",
-            java.util.Arrays.asList("sb", "score"), null,
+            Arrays.asList("sb", "score"), null,
             new ScoreboardCommand(plugin.getScoreboardModeSelectionGUI()), null);
 
-        // DuelAdmin
+        // Teleportar para lobby
+        registerCommand("spawn", "Teleportar para o lobby",
+            Arrays.asList("lobby"), null,
+            new SpawnCommand(plugin), null);
+
+        // Entrar na fila
+        registerCommand("queue", "Entrar na fila de matchmaking",
+            Arrays.asList("fila", "matchmaking"), null,
+            new QueueCommand(plugin, plugin.getDuelManager(), plugin.getDuelModeSelectionGUI()),
+            new QueueTabCompleter());
+    }
+
+    /**
+     * Registra comandos administrativos (requerem permissão artixduels.admin).
+     */
+    private void registerAdminCommands() {
+        // Comando administrativo principal
         registerCommand("dueladmin", "Comandos administrativos de duelos",
-            java.util.Arrays.asList("dueladm", "dadm"), "artixduels.admin",
-            new DuelAdminCommand(plugin, plugin.getDuelManager(), plugin.getKitManager(), plugin.getArenaManager(), plugin.getStatsManager(), plugin.getMessageManager(), plugin.getConfigGUI()),
+            Arrays.asList("dueladm", "dadm"), "artixduels.admin",
+            new DuelAdminCommand(plugin, plugin.getDuelManager(), plugin.getKitManager(), 
+                               plugin.getArenaManager(), plugin.getStatsManager(), 
+                               plugin.getMessageManager(), plugin.getConfigGUI()),
             null);
 
-        // SetSpawn
+        // Definir spawns
         registerCommand("setspawn", "Definir spawns do lobby e arenas",
-            java.util.Arrays.asList("spawn"), "artixduels.admin",
+            Arrays.asList("spawn"), "artixduels.admin",
             new SetSpawnCommand(plugin, plugin.getArenaManager()),
             new SetSpawnTabCompleter(plugin.getArenaManager()));
 
-        // Arena
+        // Gerenciar arenas
         registerCommand("arena", "Gerenciar arenas",
-            java.util.Arrays.asList("arenas"), "artixduels.admin",
+            Arrays.asList("arenas"), "artixduels.admin",
             new ArenaCommand(plugin.getArenaManager(), plugin.getKitManager()),
             new ArenaTabCompleter(plugin.getArenaManager(), plugin.getKitManager()));
 
-        // Kit
+        // Gerenciar kits
         registerCommand("kit", "Gerenciar kits",
-            java.util.Arrays.asList("kits"), "artixduels.admin",
+            Arrays.asList("kits"), "artixduels.admin",
             new KitCommand(plugin.getKitManager(), plugin.getConfigGUI()),
             new KitTabCompleter(plugin.getKitManager()));
 
-        // NPC
+        // Gerenciar NPCs
         registerCommand("npc", "Gerenciar NPCs",
-            java.util.Arrays.asList("npcs"), "artixduels.admin",
+            Arrays.asList("npcs"), "artixduels.admin",
             new NPCCommand(plugin, plugin.getDuelNPC(), plugin.getMessageManager()),
             new NPCTabCompleter());
 
-        // Spawn
-        registerCommand("spawn", "Teleportar para o lobby",
-            java.util.Arrays.asList("lobby"), null,
-            new SpawnCommand(plugin), null);
-
-        // Queue
-        registerCommand("queue", "Entrar na fila de matchmaking",
-            java.util.Arrays.asList("fila", "matchmaking"), null,
-            new QueueCommand(plugin, plugin.getDuelManager(), plugin.getDuelModeSelectionGUI()),
-            new QueueTabCompleter());
-
-        // Artix-Holo
+        // Gerenciar hologramas
         registerCommand("artix-holo", "Gerenciar hologramas",
-            java.util.Arrays.asList("hologram", "holograms", "holo"), "artixduels.admin",
+            Arrays.asList("hologram", "holograms", "holo"), "artixduels.admin",
             new HologramCommand(plugin),
             new HologramTabCompleter(plugin));
     }

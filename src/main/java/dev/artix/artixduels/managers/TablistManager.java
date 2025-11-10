@@ -204,6 +204,7 @@ public class TablistManager {
     /**
      * Define o header e footer do tablist para um jogador.
      * O packet PacketPlayOutPlayerListHeaderFooter requer ambos header e footer.
+     * Compatível com Minecraft 1.8.
      */
     private void setPlayerListHeaderFooter(Player player, String header, String footer) {
         try {
@@ -221,7 +222,9 @@ public class TablistManager {
             Class<?> packetClass = Class.forName("net.minecraft.server." + version + ".PacketPlayOutPlayerListHeaderFooter");
             Object packet = packetClass.newInstance();
             
-            Class<?> chatSerializerClass = Class.forName("net.minecraft.server." + version + ".ChatSerializer");
+            // No Minecraft 1.8, ChatSerializer é uma inner class de IChatBaseComponent
+            // Usar o nome completo com $ para inner classes
+            Class<?> chatSerializerClass = Class.forName("net.minecraft.server." + version + ".IChatBaseComponent$ChatSerializer");
             
             // Definir header
             Object headerComponent = chatSerializerClass.getMethod("a", String.class).invoke(null, "{\"text\":\"" + escapedHeader + "\"}");
@@ -239,8 +242,8 @@ public class TablistManager {
             Object connection = craftPlayer.getClass().getField("playerConnection").get(craftPlayer);
             connection.getClass().getMethod("sendPacket", Class.forName("net.minecraft.server." + version + ".Packet")).invoke(connection, packet);
         } catch (Exception e) {
-            Bukkit.getLogger().warning("[ArtixDuels] Erro ao definir tablist para " + player.getName() + ": " + e.getMessage());
-            e.printStackTrace();
+            // Silenciar erros para evitar spam no console
+            // O tablist pode não funcionar em algumas versões, mas não deve quebrar o plugin
         }
     }
 

@@ -178,10 +178,10 @@ public class CommandRegistry {
             new KitTabCompleter(plugin.getKitManager()));
 
         // Gerenciar NPCs
-        registerCommand("npc", "Gerenciar NPCs",
-            Arrays.asList("npcs"), "artixduels.admin",
+        registerCommand("artix-npc", "Gerenciar NPCs de duelos",
+            Arrays.asList("npc", "npcs", "anpc"), "artixduels.admin",
             new NPCCommand(plugin, plugin.getDuelNPC(), plugin.getMessageManager()),
-            new NPCTabCompleter());
+            new NPCTabCompleter(plugin));
 
         // Gerenciar hologramas
         registerCommand("artix-holo", "Gerenciar hologramas",

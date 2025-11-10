@@ -139,9 +139,12 @@ public final class ArtixDuels extends JavaPlugin {
     private void startTablistUpdateTask() {
         if (tablistManager == null || !tablistManager.isEnabled()) return;
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+        // Executar de forma síncrona para evitar problemas com reflection
+        // O intervalo no config está em segundos, converter para ticks (1 segundo = 20 ticks)
+        long intervalTicks = tablistManager.getUpdateInterval() * 20L;
+        getServer().getScheduler().runTaskTimer(this, () -> {
             tablistManager.updateAllTablists();
-        }, 0L, tablistManager.getUpdateInterval());
+        }, 20L, intervalTicks);
     }
 
     @Override

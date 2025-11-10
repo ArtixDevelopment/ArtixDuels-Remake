@@ -8,10 +8,18 @@ public class Arena {
     private Location player2Spawn;
     private Location spectatorSpawn;
     private boolean inUse;
+    private boolean enabled;
+    private boolean kitsEnabled;
+    private boolean rulesEnabled;
+    private String defaultKit;
 
     public Arena(String name) {
         this.name = name;
         this.inUse = false;
+        this.enabled = true;
+        this.kitsEnabled = true;
+        this.rulesEnabled = true;
+        this.defaultKit = null;
     }
 
     public String getName() {
@@ -52,6 +60,38 @@ public class Arena {
 
     public void setInUse(boolean inUse) {
         this.inUse = inUse;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isKitsEnabled() {
+        return kitsEnabled;
+    }
+
+    public void setKitsEnabled(boolean kitsEnabled) {
+        this.kitsEnabled = kitsEnabled;
+    }
+
+    public boolean isRulesEnabled() {
+        return rulesEnabled;
+    }
+
+    public void setRulesEnabled(boolean rulesEnabled) {
+        this.rulesEnabled = rulesEnabled;
+    }
+
+    public String getDefaultKit() {
+        return defaultKit;
+    }
+
+    public void setDefaultKit(String defaultKit) {
+        this.defaultKit = defaultKit;
     }
 }
 

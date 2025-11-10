@@ -71,16 +71,19 @@ public final class ArtixDuels extends JavaPlugin {
         kitManager = new KitManager(kitsConfig, kitsFile);
         arenaManager = new ArenaManager(getConfig(), new File(getDataFolder(), "config.yml"));
         
-        PlaceholderManager placeholderManager = new PlaceholderManager(null, statsManager);
-        scoreboardPreferences = new PlayerScoreboardPreferences(getDataFolder());
-        scoreboardManager = new ScoreboardManager(statsManager, scoreboardConfig, placeholderManager, scoreboardPreferences);
         rewardManager = new RewardManager(this, getConfig());
         betManager = new BetManager(this, getConfig());
         cooldownManager = new CooldownManager(getConfig());
         spectatorManager = new SpectatorManager(arenaManager);
         
         duelManager = new DuelManager(this, kitManager, arenaManager, statsManager,
-                scoreboardManager, rewardManager, betManager, cooldownManager, spectatorManager, historyDAO);
+                null, rewardManager, betManager, cooldownManager, spectatorManager, historyDAO);
+        
+        PlaceholderManager placeholderManager = new PlaceholderManager(duelManager, statsManager);
+        scoreboardPreferences = new PlayerScoreboardPreferences(getDataFolder());
+        scoreboardManager = new ScoreboardManager(statsManager, scoreboardConfig, placeholderManager, scoreboardPreferences);
+        scoreboardManager.setDuelManager(duelManager);
+        duelManager.setScoreboardManager(scoreboardManager);
 
         tablistManager = new TablistManager(tablistConfig, statsManager, duelManager);
 
@@ -106,8 +109,11 @@ public final class ArtixDuels extends JavaPlugin {
         getCommand("history").setExecutor(new HistoryCommand(historyDAO));
         getCommand("scoreboard").setExecutor(new ScoreboardCommand(scoreboardModeSelectionGUI));
         getCommand("dueladmin").setExecutor(new DuelAdminCommand(this, duelManager, kitManager, arenaManager, statsManager, messageManager, configGUI));
+        getCommand("setspawn").setExecutor(new dev.artix.artixduels.commands.SetSpawnCommand(this, arenaManager));
+        getCommand("arena").setExecutor(new dev.artix.artixduels.commands.ArenaCommand(arenaManager, kitManager));
+        getCommand("kit").setExecutor(new dev.artix.artixduels.commands.KitCommand(kitManager, configGUI));
 
-        getServer().getPluginManager().registerEvents(new DuelListener(duelManager), this);
+        getServer().getPluginManager().registerEvents(new DuelListener(duelManager, scoreboardManager), this);
         getServer().getPluginManager().registerEvents(new TablistListener(tablistManager), this);
         getServer().getPluginManager().registerEvents(new ProfileItemListener(this, scoreboardModeSelectionGUI), this);
         if (getServer().getPluginManager().getPlugin("Citizens") != null) {
@@ -178,7 +184,9 @@ public final class ArtixDuels extends JavaPlugin {
         scoreboardConfig = YamlConfiguration.loadConfiguration(scoreboardFile);
         if (scoreboardManager != null && duelManager != null && scoreboardPreferences != null) {
             PlaceholderManager placeholderManager = new PlaceholderManager(duelManager, statsManager);
-            scoreboardManager = new ScoreboardManager(statsManager, scoreboardConfig, placeholderManager, scoreboardPreferences);
+            scoreboardManager.setDuelManager(duelManager);
+            scoreboardManager.reload(scoreboardConfig, placeholderManager);
+            duelManager.setScoreboardManager(scoreboardManager);
         }
     }
 
@@ -297,5 +305,39 @@ public final class ArtixDuels extends JavaPlugin {
             loadKitsConfig();
         }
         return kitsConfig;
+    }
+
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+        if (arenaManager != null) {
+            arenaManager.reload(getConfig());
+        }
+        if (rewardManager != null) {
+            rewardManager.reload(getConfig());
+        }
+        if (betManager != null) {
+            betManager.reload(getConfig());
+        }
+        if (cooldownManager != null) {
+            cooldownManager.reload(getConfig());
+        }
+    }
+
+    public org.bukkit.Location getLobbySpawn() {
+        String spawnString = getConfig().getString("lobby-spawn");
+        if (spawnString == null) return null;
+        
+        String[] parts = spawnString.split(",");
+        if (parts.length < 4) return null;
+        
+        String worldName = parts[0];
+        double x = Double.parseDouble(parts[1]);
+        double y = Double.parseDouble(parts[2]);
+        double z = Double.parseDouble(parts[3]);
+        float yaw = parts.length > 4 ? Float.parseFloat(parts[4]) : 0;
+        float pitch = parts.length > 5 ? Float.parseFloat(parts[5]) : 0;
+        
+        return new org.bukkit.Location(org.bukkit.Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
     }
 }

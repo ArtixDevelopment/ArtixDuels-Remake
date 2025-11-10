@@ -71,5 +71,10 @@ public class CooldownManager {
         duelCooldowns.remove(playerId);
         requestCooldowns.remove(playerId);
     }
+
+    public void reload(FileConfiguration config) {
+        this.duelCooldownTime = config.getLong("cooldowns.duel", 60) * 1000;
+        this.requestCooldownTime = config.getLong("cooldowns.request", 10) * 1000;
+    }
 }
 

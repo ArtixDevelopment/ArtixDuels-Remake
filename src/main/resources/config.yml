@@ -1,5 +1,5 @@
 database:
-  type: "mongodb"
+  type: "flatfile"
   connection-string: "mongodb://localhost:27017"
   database-name: "artixduels"
 

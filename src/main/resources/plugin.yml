@@ -37,3 +37,18 @@ commands:
     description: Configurar modos do scoreboard
     usage: /<command>
     aliases: [sb, score]
+  setspawn:
+    description: Definir spawns do lobby e arenas
+    usage: /<command> <lobby|arena> [arena] [pos1|pos2]
+    aliases: [spawn]
+    permission: artixduels.admin
+  arena:
+    description: Gerenciar arenas
+    usage: /<command> <toggle|setkit> <arena> [função|kit]
+    aliases: [arenas]
+    permission: artixduels.admin
+  kit:
+    description: Gerenciar kits
+    usage: /<command> <manage|create|delete> [nome]
+    aliases: [kits]
+    permission: artixduels.admin

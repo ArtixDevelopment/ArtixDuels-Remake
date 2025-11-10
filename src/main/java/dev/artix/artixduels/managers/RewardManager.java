@@ -38,6 +38,9 @@ public class RewardManager {
         moneyReward = rewardsSection.getDouble("money", 0.0);
         expReward = rewardsSection.getInt("exp", 0);
 
+        winRewards.clear();
+        lossRewards.clear();
+
         ConfigurationSection winSection = rewardsSection.getConfigurationSection("win");
         if (winSection != null) {
             loadRewardList(winSection, winRewards);
@@ -47,6 +50,10 @@ public class RewardManager {
         if (lossSection != null) {
             loadRewardList(lossSection, lossRewards);
         }
+    }
+
+    public void reload(FileConfiguration config) {
+        loadRewards(config);
     }
 
     private void loadRewardList(ConfigurationSection section, List<Reward> rewards) {

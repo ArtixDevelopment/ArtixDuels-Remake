@@ -167,7 +167,8 @@ public class ConfigGUI implements Listener {
             plugin.reloadScoreboardConfig();
             plugin.reloadTablistConfig();
             plugin.reloadNPCsConfig();
-            messageManager.reload();
+            plugin.reloadMessagesConfig();
+            plugin.reloadKitsConfig();
             player.sendMessage(messageManager.getMessage("admin.config-reloaded"));
             player.closeInventory();
         } else if (displayName.contains("Fechar")) {

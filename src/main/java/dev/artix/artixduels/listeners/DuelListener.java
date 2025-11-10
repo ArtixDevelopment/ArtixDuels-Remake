@@ -1,11 +1,13 @@
 package dev.artix.artixduels.listeners;
 
 import dev.artix.artixduels.managers.DuelManager;
+import dev.artix.artixduels.managers.ScoreboardManager;
 import dev.artix.artixduels.models.Duel;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -14,9 +16,24 @@ import java.util.UUID;
 
 public class DuelListener implements Listener {
     private DuelManager duelManager;
+    private ScoreboardManager scoreboardManager;
 
     public DuelListener(DuelManager duelManager) {
         this.duelManager = duelManager;
+        this.scoreboardManager = duelManager.getScoreboardManager();
+    }
+
+    public DuelListener(DuelManager duelManager, ScoreboardManager scoreboardManager) {
+        this.duelManager = duelManager;
+        this.scoreboardManager = scoreboardManager;
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        if (scoreboardManager != null && !duelManager.isInDuel(player)) {
+            scoreboardManager.createLobbyScoreboard(player);
+        }
     }
 
     @EventHandler

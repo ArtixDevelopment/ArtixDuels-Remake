@@ -31,6 +31,10 @@ public class BetManager {
         maxBet = config.getDouble("betting.max-bet", 10000.0);
     }
 
+    public void reload(FileConfiguration config) {
+        loadConfig(config);
+    }
+
     public boolean createBet(Player challenger, Player target, double amount) {
         if (!bettingEnabled) {
             challenger.sendMessage("§cSistema de apostas está desabilitado!");

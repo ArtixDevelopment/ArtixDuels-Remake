@@ -466,5 +466,34 @@ public class ScoreboardManager {
         }
         playerScoreboards.clear();
     }
+
+    public void reload(FileConfiguration newConfig, PlaceholderManager newPlaceholderManager) {
+        this.scoreboardConfig = newConfig;
+        this.placeholderManager = newPlaceholderManager;
+        loadConfig();
+        
+        for (UUID playerId : new java.util.HashMap<>(playerScoreboards).keySet()) {
+            Player player = Bukkit.getPlayer(playerId);
+            if (player != null && player.isOnline()) {
+                if (duelManager != null && duelManager.isInDuel(player)) {
+                    Duel duel = duelManager.getPlayerDuel(player);
+                    if (duel != null) {
+                        Player opponent = Bukkit.getPlayer(duel.getOpponent(player.getUniqueId()));
+                        if (opponent != null) {
+                            createDuelScoreboardForPlayer(player, opponent, duel);
+                        }
+                    }
+                } else {
+                    createLobbyScoreboard(player);
+                }
+            }
+        }
+    }
+
+    private DuelManager duelManager;
+    
+    public void setDuelManager(DuelManager duelManager) {
+        this.duelManager = duelManager;
+    }
 }
 

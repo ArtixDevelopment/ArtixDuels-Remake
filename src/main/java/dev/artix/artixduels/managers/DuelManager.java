@@ -438,5 +438,13 @@ public class DuelManager {
         Queue<UUID> queue = matchmakingQueuesByMode.get(mode);
         return queue != null ? queue.size() : 0;
     }
+
+    public void setScoreboardManager(ScoreboardManager scoreboardManager) {
+        this.scoreboardManager = scoreboardManager;
+    }
+
+    public ScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
+    }
 }
 

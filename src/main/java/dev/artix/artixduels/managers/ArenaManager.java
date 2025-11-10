@@ -52,6 +52,22 @@ public class ArenaManager {
                 if (specLoc != null) arena.setSpectatorSpawn(specLoc);
             }
 
+            if (arenaSection.contains("enabled")) {
+                arena.setEnabled(arenaSection.getBoolean("enabled", true));
+            }
+
+            if (arenaSection.contains("kits-enabled")) {
+                arena.setKitsEnabled(arenaSection.getBoolean("kits-enabled", true));
+            }
+
+            if (arenaSection.contains("rules-enabled")) {
+                arena.setRulesEnabled(arenaSection.getBoolean("rules-enabled", true));
+            }
+
+            if (arenaSection.contains("default-kit")) {
+                arena.setDefaultKit(arenaSection.getString("default-kit"));
+            }
+
             arenas.put(arenaName, arena);
             availableArenas.add(arena);
         }
@@ -116,6 +132,12 @@ public class ArenaManager {
         config.set(path + ".player1-spawn", locationToString(arena.getPlayer1Spawn()));
         config.set(path + ".player2-spawn", locationToString(arena.getPlayer2Spawn()));
         config.set(path + ".spectator-spawn", locationToString(arena.getSpectatorSpawn()));
+        config.set(path + ".enabled", arena.isEnabled());
+        config.set(path + ".kits-enabled", arena.isKitsEnabled());
+        config.set(path + ".rules-enabled", arena.isRulesEnabled());
+        if (arena.getDefaultKit() != null) {
+            config.set(path + ".default-kit", arena.getDefaultKit());
+        }
         
         try {
             config.save(configFile);
@@ -127,6 +149,13 @@ public class ArenaManager {
     private String locationToString(Location loc) {
         if (loc == null) return null;
         return loc.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + "," + loc.getPitch();
+    }
+
+    public void reload(FileConfiguration newConfig) {
+        this.config = newConfig;
+        arenas.clear();
+        availableArenas.clear();
+        loadArenas(newConfig);
     }
 }
 

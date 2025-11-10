@@ -1,5 +1,5 @@
 messages:
-  prefix: "&6[ArtixDuels] &r"
+  prefix: "&b[ArtixDuels] &r"
   
   duel:
     request-sent: "&aConvite de duelo enviado para &e{target}!"

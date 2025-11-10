@@ -4,6 +4,7 @@ import dev.artix.artixduels.ArtixDuels;
 import dev.artix.artixduels.managers.DuelManager;
 import dev.artix.artixduels.managers.KitManager;
 import dev.artix.artixduels.managers.ArenaManager;
+import dev.artix.artixduels.managers.MenuManager;
 import dev.artix.artixduels.managers.MessageManager;
 import dev.artix.artixduels.models.DuelMode;
 import org.bukkit.Bukkit;
@@ -28,12 +29,14 @@ public class DuelModeSelectionGUI implements Listener {
     private DuelManager duelManager;
     private KitManager kitManager;
     private MessageManager messageManager;
+    private MenuManager menuManager;
     private Map<UUID, String> pendingChallenges;
 
-    public DuelModeSelectionGUI(ArtixDuels plugin, DuelManager duelManager, KitManager kitManager, ArenaManager arenaManager, MessageManager messageManager) {
+    public DuelModeSelectionGUI(ArtixDuels plugin, DuelManager duelManager, KitManager kitManager, ArenaManager arenaManager, MessageManager messageManager, MenuManager menuManager) {
         this.duelManager = duelManager;
         this.kitManager = kitManager;
         this.messageManager = messageManager;
+        this.menuManager = menuManager;
         this.pendingChallenges = new HashMap<>();
     }
 
@@ -51,7 +54,13 @@ public class DuelModeSelectionGUI implements Listener {
 
         pendingChallenges.put(challenger.getUniqueId(), targetName);
 
-        Inventory gui = Bukkit.createInventory(null, 54, "&6&lSelecione o Modo de Duelo");
+        MenuManager.MenuData menuData = menuManager.getMenu("duel-mode-selection");
+        String title = menuData != null ? menuData.getTitle() : "&6&lModo de Duelo";
+        if (title.length() > 32) {
+            title = title.substring(0, 32);
+        }
+        int size = menuData != null ? menuData.getSize() : 54;
+        Inventory gui = Bukkit.createInventory(null, size, title);
         
         int slot = 0;
         for (DuelMode mode : DuelMode.values()) {
@@ -62,9 +71,20 @@ public class DuelModeSelectionGUI implements Listener {
             slot++;
         }
         
-        ItemStack closeItem = createMenuItem(Material.BARRIER, messageManager.getMessageNoPrefix("gui.close"), 
-            "", "&7Clique para fechar");
-        gui.setItem(49, closeItem);
+        // Adicionar itens do menu configurável
+        if (menuData != null) {
+            for (MenuManager.MenuItemData itemData : menuData.getItems()) {
+                ItemStack item = menuManager.createMenuItem("duel-mode-selection", itemData.getName());
+                if (item != null) {
+                    gui.setItem(itemData.getSlot(), item);
+                }
+            }
+        } else {
+            // Fallback
+            ItemStack closeItem = createMenuItem(Material.BARRIER, messageManager.getMessageNoPrefix("gui.close"), 
+                "", "&7Clique para fechar");
+            gui.setItem(49, closeItem);
+        }
         
         challenger.openInventory(gui);
     }
@@ -76,7 +96,7 @@ public class DuelModeSelectionGUI implements Listener {
         Player player = (Player) event.getWhoClicked();
         String title = event.getView().getTitle();
         
-        if (!title.contains("Selecione o Modo de Duelo")) {
+        if (!title.contains("Modo de Duelo")) {
             return;
         }
         
@@ -135,7 +155,7 @@ public class DuelModeSelectionGUI implements Listener {
             Player player = (Player) event.getPlayer();
             String title = event.getView().getTitle();
             
-            if (title.contains("Selecione o Modo de Duelo")) {
+            if (title.contains("Modo de Duelo")) {
                 pendingChallenges.remove(player.getUniqueId());
             }
         }
@@ -211,6 +231,90 @@ public class DuelModeSelectionGUI implements Listener {
             return null;
         }
         return kitManager.getKits().keySet().iterator().next();
+    }
+
+    public void openQueueMenu(Player player) {
+        MenuManager.MenuData menuData = menuManager.getMenu("queue-mode-selection");
+        String title = menuData != null ? menuData.getTitle() : "&6&lProcurar Partida";
+        if (title.length() > 32) {
+            title = title.substring(0, 32);
+        }
+        int size = menuData != null ? menuData.getSize() : 54;
+        Inventory gui = Bukkit.createInventory(null, size, title);
+        
+        int slot = 0;
+        for (DuelMode mode : DuelMode.values()) {
+            if (slot >= 45) break;
+            
+            ItemStack modeItem = createQueueModeItem(mode);
+            gui.setItem(slot, modeItem);
+            slot++;
+        }
+        
+        // Adicionar itens do menu configurável
+        if (menuData != null) {
+            for (MenuManager.MenuItemData itemData : menuData.getItems()) {
+                ItemStack item = menuManager.createMenuItem("queue-mode-selection", itemData.getName());
+                if (item != null) {
+                    gui.setItem(itemData.getSlot(), item);
+                }
+            }
+        } else {
+            // Fallback
+            ItemStack closeItem = createMenuItem(Material.BARRIER, messageManager.getMessageNoPrefix("gui.close"), 
+                "", "&7Clique para fechar");
+            gui.setItem(49, closeItem);
+        }
+        
+        player.openInventory(gui);
+    }
+
+    private ItemStack createQueueModeItem(DuelMode mode) {
+        Material material = getMaterialForMode(mode);
+        String displayName = "&6&l" + mode.getDisplayName();
+        
+        List<String> lore = new ArrayList<>();
+        lore.add("&7Clique para entrar na fila");
+        lore.add("&7do modo &e" + mode.getDisplayName());
+        
+        return createMenuItem(material, displayName, lore.toArray(new String[0]));
+    }
+
+    @EventHandler
+    public void onQueueInventoryClick(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) return;
+        
+        Player player = (Player) event.getWhoClicked();
+        String title = event.getView().getTitle();
+        
+        if (!title.contains("Procurar Partida") && !title.contains("Queue")) {
+            return;
+        }
+        
+        event.setCancelled(true);
+        
+        if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
+            return;
+        }
+        
+        ItemStack item = event.getCurrentItem();
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null || !meta.hasDisplayName()) return;
+        
+        String displayName = ChatColor.stripColor(meta.getDisplayName());
+        
+        if (displayName.contains("Fechar")) {
+            player.closeInventory();
+            return;
+        }
+        
+        DuelMode selectedMode = getModeFromDisplayName(displayName);
+        if (selectedMode == null) {
+            return;
+        }
+        
+        player.closeInventory();
+        duelManager.addToMatchmaking(player, selectedMode);
     }
 }
 

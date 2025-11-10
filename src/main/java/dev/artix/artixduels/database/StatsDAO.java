@@ -50,6 +50,8 @@ public class StatsDAO implements IStatsDAO {
         doc.append("elo", stats.getElo());
         doc.append("winStreak", stats.getWinStreak());
         doc.append("bestWinStreak", stats.getBestWinStreak());
+        doc.append("xp", stats.getXp());
+        doc.append("level", stats.getLevel());
         
         // Salvar estatísticas por modo
         Document modeStatsDoc = new Document();
@@ -77,6 +79,8 @@ public class StatsDAO implements IStatsDAO {
         stats.setElo(doc.getInteger("elo", 1000));
         stats.setWinStreak(doc.getInteger("winStreak", 0));
         stats.setBestWinStreak(doc.getInteger("bestWinStreak", 0));
+        stats.setXp(doc.getInteger("xp", 0));
+        stats.setLevel(doc.getInteger("level", 1));
         
         // Carregar estatísticas por modo
         Map<DuelMode, PlayerStats.ModeStats> modeStatsMap = new HashMap<>();

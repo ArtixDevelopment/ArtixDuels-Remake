@@ -12,6 +12,10 @@ npcs:
     equipment:
       hand: null
       off-hand: null
+      helmet: null
+      chestplate: null
+      leggings: null
+      boots: null
     hologram:
       enabled: true
       height: 2.5
@@ -19,7 +23,8 @@ npcs:
       offset-z: 0.0
       lines:
         - "&c&lBEDFIGHT"
-        - "&e{players-in-duel} jogando"
+        - " "
+        - "&eClique aqui!"
   
   stickfight:
     mode: "STICKFIGHT"

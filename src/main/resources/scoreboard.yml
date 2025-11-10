@@ -8,11 +8,11 @@ lobby:
   update-interval: 10
   lines:
     - " "
-    - "&7Envie Duelos utilizando"
-    - "&b/duel <nick> &7desafiando o player"
+    - "&7Desafie outros jogadores
+    - "&7utilizando: &b/duel <nick>"
     - "<mode-template>"
     - " "
-    - "&fJogadores: <players>"
+    - "&fJogadores: &b<players>"
     - " "
     - "&bstore.artixdevelopment.com"
 
@@ -20,9 +20,21 @@ mode-template:
   lines:
     - " "
     - "&b<kit-mode>"
-    - " &7Vitórias: <wins-mode>"
-    - " &fDerrotas: <loses-mode>"
-    - " &fAbates: <kills-mode>"
+    - " &7Vitórias: &a<wins-mode>"
+    - " &7Derrotas: &c<loses-mode>"
+    - " &7Abates: &b<kills-mode>"
+
+queue:
+  title: "&b&lDUELS"
+  update-interval: 10
+  lines:
+    - " "
+    - "&7Aguardando oponente..."
+    - " "
+    - "&fModo: &b<queue-mode>"
+    - "&fELO: &b<elo>"
+    - " "
+    - "&bstore.artixdevelopment.com"
 
 duel:
   title: "&b&lDUELS"
@@ -46,7 +58,7 @@ duel:
   
   modes:
     BEDFIGHT:
-      - " "
+      - "&f"
       - "&7Teams:"
       - " &9[B] <bBed>"
       - " &c[R] <rBed>"

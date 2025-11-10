@@ -68,6 +68,7 @@ public class DuelAdminCommand implements CommandExecutor {
                 plugin.reloadNPCsConfig();
                 plugin.reloadMessagesConfig();
                 plugin.reloadKitsConfig();
+                plugin.reloadMenuConfig();
                 sender.sendMessage(messageManager.getMessage("admin.config-reloaded"));
                 break;
 

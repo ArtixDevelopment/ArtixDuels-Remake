@@ -56,17 +56,19 @@ public class DuelListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        Duel duel = duelManager.getPlayerDuel(player);
-        
-        if (duel != null) {
-            UUID opponentId = duel.getOpponent(player.getUniqueId());
-            if (opponentId != null) {
-                Player opponent = org.bukkit.Bukkit.getPlayer(opponentId);
-                if (opponent != null) {
-                    duelManager.endDuel(opponentId, player.getUniqueId(), false);
+        if (duelManager.isInDuel(player)) {
+            Duel duel = duelManager.getPlayerDuel(player);
+            if (duel != null) {
+                UUID opponentId = duel.getOpponent(player.getUniqueId());
+                if (opponentId != null) {
+                    Player opponent = org.bukkit.Bukkit.getPlayer(opponentId);
+                    if (opponent != null) {
+                        duelManager.endDuel(opponentId, player.getUniqueId(), false);
+                    }
                 }
             }
         }
+        duelManager.removeFromMatchmaking(player);
     }
 
     @EventHandler

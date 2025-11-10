@@ -1,0 +1,172 @@
+menus:
+  # Menu de Configuração Principal
+  main-config:
+    title: "&6&lMenu de Configuração"
+    size: 54
+    items:
+      kits:
+        slot: 10
+        material: DIAMOND_SWORD
+        name: "&6&lKits"
+        lore:
+          - "&7Gerencie os kits de duelo"
+          - "&7Clique para abrir o menu de kits"
+        action: open-kits-menu
+      
+      arenas:
+        slot: 12
+        material: GRASS
+        name: "&6&lArenas"
+        lore:
+          - "&7Gerencie as arenas de duelo"
+          - "&7Clique para abrir o menu de arenas"
+        action: open-arenas-menu
+      
+      npcs:
+        slot: 14
+        material: SKULL_ITEM
+        data: 3
+        name: "&6&lNPCs"
+        lore:
+          - "&7Gerencie os NPCs de duelo"
+          - "&7Clique para abrir o menu de NPCs"
+        action: open-npcs-menu
+      
+      modes:
+        slot: 16
+        material: BOOK
+        name: "&6&lModos"
+        lore:
+          - "&7Gerencie os modos de duelo"
+          - "&7Clique para abrir o menu de modos"
+        action: open-modes-menu
+      
+      reload:
+        slot: 40
+        material: REDSTONE
+        name: "&c&lRecarregar"
+        lore:
+          - "&7Recarrega todas as configurações"
+          - "&7Clique para recarregar"
+        action: reload-config
+      
+      close:
+        slot: 49
+        material: BARRIER
+        name: "&cFechar"
+        lore:
+          - "&7Clique para fechar"
+        action: close-menu
+
+  # Menu de Kits
+  kits:
+    title: "&6&lKits"
+    size: 54
+    items:
+      create-kit:
+        slot: 45
+        material: EMERALD
+        name: "&aCriar Kit"
+        lore:
+          - "&7Use /kit create <nome>"
+          - "&7para criar um kit"
+        action: create-kit-hint
+      
+      back:
+        slot: 49
+        material: ARROW
+        name: "&cVoltar"
+        lore:
+          - "&7Clique para voltar"
+        action: open-main-menu
+      
+      close:
+        slot: 53
+        material: BARRIER
+        name: "&cFechar"
+        lore:
+          - "&7Clique para fechar"
+        action: close-menu
+
+  # Menu de Arenas
+  arenas:
+    title: "&6&lArenas"
+    size: 54
+    items:
+      create-arena:
+        slot: 45
+        material: EMERALD
+        name: "&aCriar Arena"
+        lore:
+          - "&7Use /arena create <nome>"
+          - "&7para criar uma arena"
+        action: create-arena-hint
+      
+      back:
+        slot: 49
+        material: ARROW
+        name: "&cVoltar"
+        lore:
+          - "&7Clique para voltar"
+        action: open-main-menu
+      
+      close:
+        slot: 53
+        material: BARRIER
+        name: "&cFechar"
+        lore:
+          - "&7Clique para fechar"
+        action: close-menu
+
+  # Menu de Seleção de Modo de Duelo
+  duel-mode-selection:
+    title: "&6&lModo de Duelo"
+    size: 54
+    items:
+      close:
+        slot: 49
+        material: BARRIER
+        name: "&cFechar"
+        lore:
+          - "&7Clique para fechar"
+        action: close-menu
+
+  # Menu de Seleção de Modo de Duelo (Queue)
+  queue-mode-selection:
+    title: "&6&lSelecionar Modo"
+    size: 54
+    items:
+      close:
+        slot: 49
+        material: BARRIER
+        name: "&cFechar"
+        lore:
+          - "&7Clique para fechar"
+        action: close-menu
+
+  # Menu de Perfil
+  profile:
+    title: "&6&lPerfil"
+    size: 54
+    items:
+      close:
+        slot: 49
+        material: BARRIER
+        name: "&cFechar"
+        lore:
+          - "&7Clique para fechar"
+        action: close-menu
+
+  # Menu de Seleção de Modo do Scoreboard
+  scoreboard-mode-selection:
+    title: "&6&lModo Scoreboard"
+    size: 54
+    items:
+      close:
+        slot: 49
+        material: BARRIER
+        name: "&cFechar"
+        lore:
+          - "&7Clique para fechar"
+        action: close-menu
+

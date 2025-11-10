@@ -1,11 +1,11 @@
 tablist:
   enabled: true
-  update-interval: 20
+  update-interval: 10
 
 header:
   enabled: true
   lines:
-    - "&b&lARTIX DUELS"
+    - "&b&lARTIXDUELS"
     - "&7Melhor plugin de Duels do Minecraft"
     - ""
 
@@ -17,10 +17,10 @@ footer:
     - "&7Discord: &bdiscord.gg/artix"
 
 player-name:
-  format: "&a{player} &7({ping}ms)"
+  format: ""
   sort-by: "elo"
 
 player-list:
   enabled: true
-  show-in-duel: false
+  show-in-duel: true
 

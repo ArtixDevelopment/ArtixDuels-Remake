@@ -30,6 +30,8 @@ public class ScoreboardManager {
     private List<String> duelLines;
     private Map<dev.artix.artixduels.models.DuelMode, List<String>> modeDuelLines;
     private Map<String, String> globalPlaceholders;
+    private String queueTitle;
+    private List<String> queueLines;
 
     public ScoreboardManager(StatsManager statsManager, FileConfiguration scoreboardConfig, PlaceholderManager placeholderManager, PlayerScoreboardPreferences preferences) {
         this.statsManager = statsManager;
@@ -88,6 +90,12 @@ public class ScoreboardManager {
                 }
             }
         }
+
+        ConfigurationSection queueSection = scoreboardConfig.getConfigurationSection("queue");
+        if (queueSection != null) {
+            queueTitle = ChatColor.translateAlternateColorCodes('&', queueSection.getString("title", "§6§lFILA DE MATCHMAKING"));
+            queueLines = queueSection.getStringList("lines");
+        }
     }
 
     public void createDuelScoreboard(Player player1, Player player2, Duel duel) {
@@ -115,12 +123,27 @@ public class ScoreboardManager {
 
         if (linesToUse != null && !linesToUse.isEmpty()) {
             int score = linesToUse.size();
-            for (String line : linesToUse) {
+            for (int i = 0; i < linesToUse.size(); i++) {
+                String line = linesToUse.get(i);
                 String processedLine = processPlaceholders(line, player, opponent, duel);
+                
+                // Corrigir espaçamento: linhas vazias ou com apenas espaços precisam ser únicas
+                String trimmed = ChatColor.stripColor(processedLine).trim();
+                if (trimmed.isEmpty() || trimmed.equals("&f") || trimmed.equals("&7")) {
+                    // Criar linha vazia única usando caracteres invisíveis únicos
+                    char invisibleChar = (char) (0xE000 + i);
+                    processedLine = ChatColor.RESET.toString() + invisibleChar;
+                }
+                
                 if (processedLine.length() > 40) {
                     processedLine = processedLine.substring(0, 40);
                 }
-                objective.getScore(processedLine).setScore(score);
+                
+                // Garantir que cada linha seja única adicionando um identificador invisível
+                char uniqueChar = (char) (0xE000 + i);
+                String finalLine = processedLine + uniqueChar;
+                
+                objective.getScore(finalLine).setScore(score);
                 score--;
             }
         } else {
@@ -196,12 +219,27 @@ public class ScoreboardManager {
         // Processar e adicionar linhas ao scoreboard
         if (!allLines.isEmpty()) {
             int score = allLines.size();
-            for (String line : allLines) {
+            for (int i = 0; i < allLines.size(); i++) {
+                String line = allLines.get(i);
                 String processedLine = processLobbyPlaceholders(line, player, stats);
+                
+                // Corrigir espaçamento: linhas vazias ou com apenas espaços precisam ser únicas
+                String trimmed = ChatColor.stripColor(processedLine).trim();
+                if (trimmed.isEmpty() || trimmed.equals("&f") || trimmed.equals("&7")) {
+                    // Criar linha vazia única usando caracteres invisíveis únicos
+                    char invisibleChar = (char) (0xE000 + i);
+                    processedLine = ChatColor.RESET.toString() + invisibleChar;
+                }
+                
                 if (processedLine.length() > 40) {
                     processedLine = processedLine.substring(0, 40);
                 }
-                objective.getScore(processedLine).setScore(score);
+                
+                // Garantir que cada linha seja única adicionando um identificador invisível
+                char uniqueChar = (char) (0xE000 + i);
+                String finalLine = processedLine + uniqueChar;
+                
+                objective.getScore(finalLine).setScore(score);
                 score--;
             }
         } else {
@@ -233,6 +271,85 @@ public class ScoreboardManager {
 
         player.setScoreboard(scoreboard);
         playerScoreboards.put(player.getUniqueId(), scoreboard);
+    }
+
+    public void createQueueScoreboard(Player player, dev.artix.artixduels.models.DuelMode mode) {
+        if (!enabled) return;
+        
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective("queue", "dummy");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName(queueTitle != null ? queueTitle : ChatColor.GOLD + "§6§lFILA DE MATCHMAKING");
+
+        PlayerStats stats = statsManager.getPlayerStats(player);
+        
+        if (queueLines != null && !queueLines.isEmpty()) {
+            int score = queueLines.size();
+            for (int i = 0; i < queueLines.size(); i++) {
+                String line = queueLines.get(i);
+                String processedLine = processQueuePlaceholders(line, player, stats, mode);
+                
+                // Corrigir espaçamento: linhas vazias ou com apenas espaços precisam ser únicas
+                String trimmed = ChatColor.stripColor(processedLine).trim();
+                if (trimmed.isEmpty() || trimmed.equals("&f") || trimmed.equals("&7")) {
+                    // Criar linha vazia única usando caracteres invisíveis únicos
+                    char invisibleChar = (char) (0xE000 + i);
+                    processedLine = ChatColor.RESET.toString() + invisibleChar;
+                }
+                
+                if (processedLine.length() > 40) {
+                    processedLine = processedLine.substring(0, 40);
+                }
+                
+                // Garantir que cada linha seja única adicionando um identificador invisível
+                char uniqueChar = (char) (0xE000 + i);
+                String finalLine = processedLine + uniqueChar;
+                
+                objective.getScore(finalLine).setScore(score);
+                score--;
+            }
+        } else {
+            // Fallback padrão
+            Score modeScore = objective.getScore(ChatColor.YELLOW + "Modo: " + ChatColor.WHITE + mode.getDisplayName());
+            modeScore.setScore(5);
+            
+            Score empty1 = objective.getScore(ChatColor.BLACK + " ");
+            empty1.setScore(4);
+            
+            Score eloScore = objective.getScore(ChatColor.GOLD + "ELO: " + ChatColor.WHITE + stats.getElo());
+            eloScore.setScore(3);
+            
+            Score empty2 = objective.getScore(ChatColor.DARK_BLUE + " ");
+            empty2.setScore(2);
+            
+            Score waitingScore = objective.getScore(ChatColor.GRAY + "Aguardando oponente...");
+            waitingScore.setScore(1);
+        }
+
+        player.setScoreboard(scoreboard);
+        playerScoreboards.put(player.getUniqueId(), scoreboard);
+    }
+
+    private String processQueuePlaceholders(String line, Player player, PlayerStats stats, dev.artix.artixduels.models.DuelMode mode) {
+        String processed = ChatColor.translateAlternateColorCodes('&', line);
+        
+        // Substituir placeholders específicos da queue
+        processed = processed.replace("<queue-mode>", mode.getDisplayName());
+        processed = processed.replace("<elo>", String.valueOf(stats.getElo()));
+        
+        // Processar placeholders adicionais usando PlaceholderManager
+        if (placeholderManager != null) {
+            processed = placeholderManager.processPlaceholders(processed, player, null, mode);
+        } else {
+            // Fallback para compatibilidade
+            processed = processed.replace("{player}", player.getName());
+            processed = processed.replace("{elo}", String.valueOf(stats.getElo()));
+            processed = processed.replace("{wins}", String.valueOf(stats.getWins()));
+            processed = processed.replace("{losses}", String.valueOf(stats.getLosses()));
+            processed = processed.replace("{winrate}", String.format("%.2f", stats.getWinRate()));
+        }
+        
+        return processed;
     }
 
     private String processModeTemplate(String templateLine, dev.artix.artixduels.models.DuelMode mode, PlayerStats stats) {

@@ -129,6 +129,8 @@ public class HologramManager {
         defaultLines.add("&7Jogadores em Duelo: &a{players-in-duel}");
         defaultLines.add("&7Jogadores na Fila: &e{players-in-queue}");
         defaultLines.add("&7Duelos Ativos: &b{active-duels}");
+        defaultLines.add(" ");
+        defaultLines.add("&eClique aqui!");
         return defaultLines;
     }
 

@@ -3,6 +3,7 @@ package dev.artix.artixduels.gui;
 import dev.artix.artixduels.ArtixDuels;
 import dev.artix.artixduels.managers.ArenaManager;
 import dev.artix.artixduels.managers.KitManager;
+import dev.artix.artixduels.managers.MenuManager;
 import dev.artix.artixduels.managers.MessageManager;
 import dev.artix.artixduels.models.Arena;
 import dev.artix.artixduels.models.Kit;
@@ -29,50 +30,57 @@ public class ConfigGUI implements Listener {
     private KitManager kitManager;
     private ArenaManager arenaManager;
     private MessageManager messageManager;
+    private MenuManager menuManager;
     private Map<Player, String> editingKits;
     private Map<Player, String> editingArenas;
 
-    public ConfigGUI(ArtixDuels plugin, KitManager kitManager, ArenaManager arenaManager, MessageManager messageManager) {
+    public ConfigGUI(ArtixDuels plugin, KitManager kitManager, ArenaManager arenaManager, MessageManager messageManager, MenuManager menuManager) {
         this.plugin = plugin;
         this.kitManager = kitManager;
         this.arenaManager = arenaManager;
         this.messageManager = messageManager;
+        this.menuManager = menuManager;
         this.editingKits = new HashMap<>();
         this.editingArenas = new HashMap<>();
     }
 
     public void openMainMenu(Player player) {
-        Inventory gui = Bukkit.createInventory(null, 54, messageManager.getMessageNoPrefix("gui.main-menu-title"));
+        MenuManager.MenuData menuData = menuManager.getMenu("main-config");
+        if (menuData == null) {
+            // Fallback para configuração antiga
+            String title = ChatColor.translateAlternateColorCodes('&', messageManager.getMessageNoPrefix("gui.main-menu-title"));
+            if (title.length() > 32) {
+                title = ChatColor.translateAlternateColorCodes('&', "&6&lConfig");
+            }
+            Inventory gui = Bukkit.createInventory(null, 54, title);
+            player.openInventory(gui);
+            return;
+        }
+
+        String title = menuData.getTitle();
+        if (title.length() > 32) {
+            title = title.substring(0, 32);
+        }
+        Inventory gui = Bukkit.createInventory(null, menuData.getSize(), title);
         
-        ItemStack kitsItem = createMenuItem(Material.DIAMOND_SWORD, "&6&lKits", 
-            "&7Gerencie os kits de duelo", "&7Clique para abrir o menu de kits");
-        gui.setItem(10, kitsItem);
-        
-        ItemStack arenasItem = createMenuItem(Material.GRASS, "&6&lArenas", 
-            "&7Gerencie as arenas de duelo", "&7Clique para abrir o menu de arenas");
-        gui.setItem(12, arenasItem);
-        
-        ItemStack npcsItem = createMenuItem(Material.SKULL_ITEM, "&6&lNPCs", 
-            "&7Gerencie os NPCs de duelo", "&7Clique para abrir o menu de NPCs");
-        gui.setItem(14, npcsItem);
-        
-        ItemStack modesItem = createMenuItem(Material.BOOK, "&6&lModos", 
-            "&7Gerencie os modos de duelo", "&7Clique para abrir o menu de modos");
-        gui.setItem(16, modesItem);
-        
-        ItemStack reloadItem = createMenuItem(Material.REDSTONE, "&a&lRecarregar", 
-            "&7Recarrega todas as configurações", "&7Clique para recarregar");
-        gui.setItem(40, reloadItem);
-        
-        ItemStack closeItem = createMenuItem(Material.BARRIER, messageManager.getMessageNoPrefix("gui.close"), 
-            "", "&7Clique para fechar");
-        gui.setItem(49, closeItem);
+        for (MenuManager.MenuItemData itemData : menuData.getItems()) {
+            ItemStack item = menuManager.createMenuItem("main-config", itemData.getName());
+            if (item != null) {
+                gui.setItem(itemData.getSlot(), item);
+            }
+        }
         
         player.openInventory(gui);
     }
 
     public void openKitsMenu(Player player) {
-        Inventory gui = Bukkit.createInventory(null, 54, messageManager.getMessageNoPrefix("gui.kits-menu-title"));
+        MenuManager.MenuData menuData = menuManager.getMenu("kits");
+        String title = menuData != null ? menuData.getTitle() : "&6&lKits";
+        if (title.length() > 32) {
+            title = title.substring(0, 32);
+        }
+        int size = menuData != null ? menuData.getSize() : 54;
+        Inventory gui = Bukkit.createInventory(null, size, title);
         
         int slot = 0;
         for (Map.Entry<String, Kit> entry : kitManager.getKits().entrySet()) {
@@ -84,19 +92,36 @@ public class ConfigGUI implements Listener {
             slot++;
         }
         
-        ItemStack createItem = createMenuItem(Material.EMERALD, messageManager.getMessageNoPrefix("gui.create-kit"), 
-            "", "&7Clique para criar um novo kit");
-        gui.setItem(45, createItem);
-        
-        ItemStack backItem = createMenuItem(Material.ARROW, messageManager.getMessageNoPrefix("gui.back"), 
-            "", "&7Clique para voltar");
-        gui.setItem(49, backItem);
+        // Adicionar itens do menu configurável
+        if (menuData != null) {
+            for (MenuManager.MenuItemData itemData : menuData.getItems()) {
+                ItemStack item = menuManager.createMenuItem("kits", itemData.getName());
+                if (item != null) {
+                    gui.setItem(itemData.getSlot(), item);
+                }
+            }
+        } else {
+            // Fallback
+            ItemStack createItem = createMenuItem(Material.EMERALD, messageManager.getMessageNoPrefix("gui.create-kit"), 
+                "", "&7Clique para criar um novo kit");
+            gui.setItem(45, createItem);
+            
+            ItemStack backItem = createMenuItem(Material.ARROW, messageManager.getMessageNoPrefix("gui.back"), 
+                "", "&7Clique para voltar");
+            gui.setItem(49, backItem);
+        }
         
         player.openInventory(gui);
     }
 
     public void openArenasMenu(Player player) {
-        Inventory gui = Bukkit.createInventory(null, 54, messageManager.getMessageNoPrefix("gui.arenas-menu-title"));
+        MenuManager.MenuData menuData = menuManager.getMenu("arenas");
+        String title = menuData != null ? menuData.getTitle() : "&6&lArenas";
+        if (title.length() > 32) {
+            title = title.substring(0, 32);
+        }
+        int size = menuData != null ? menuData.getSize() : 54;
+        Inventory gui = Bukkit.createInventory(null, size, title);
         
         int slot = 0;
         for (Map.Entry<String, Arena> entry : arenaManager.getArenas().entrySet()) {
@@ -109,13 +134,24 @@ public class ConfigGUI implements Listener {
             slot++;
         }
         
-        ItemStack createItem = createMenuItem(Material.EMERALD, messageManager.getMessageNoPrefix("gui.create-arena"), 
-            "", "&7Clique para criar uma nova arena");
-        gui.setItem(45, createItem);
-        
-        ItemStack backItem = createMenuItem(Material.ARROW, messageManager.getMessageNoPrefix("gui.back"), 
-            "", "&7Clique para voltar");
-        gui.setItem(49, backItem);
+        // Adicionar itens do menu configurável
+        if (menuData != null) {
+            for (MenuManager.MenuItemData itemData : menuData.getItems()) {
+                ItemStack item = menuManager.createMenuItem("arenas", itemData.getName());
+                if (item != null) {
+                    gui.setItem(itemData.getSlot(), item);
+                }
+            }
+        } else {
+            // Fallback
+            ItemStack createItem = createMenuItem(Material.EMERALD, messageManager.getMessageNoPrefix("gui.create-arena"), 
+                "", "&7Clique para criar uma nova arena");
+            gui.setItem(45, createItem);
+            
+            ItemStack backItem = createMenuItem(Material.ARROW, messageManager.getMessageNoPrefix("gui.back"), 
+                "", "&7Clique para voltar");
+            gui.setItem(49, backItem);
+        }
         
         player.openInventory(gui);
     }
@@ -221,7 +257,10 @@ public class ConfigGUI implements Listener {
             return;
         }
         
-        String arenaName = title.replace("§6§lEditar Arena: ", "").replace(ChatColor.stripColor("§6§lEditar Arena: "), "");
+        String arenaName = title.replace("§6§lArena: ", "").replace(ChatColor.stripColor("§6§lArena: "), "");
+        if (arenaName.equals(title)) {
+            arenaName = title.replace("§6§l", "").replace(ChatColor.stripColor("§6§l"), "");
+        }
         Arena arena = arenaManager.getArena(arenaName);
         if (arena == null) return;
         
@@ -261,7 +300,14 @@ public class ConfigGUI implements Listener {
     }
 
     private void openArenaEditMenu(Player player, String arenaName) {
-        Inventory gui = Bukkit.createInventory(null, 27, "&6&lEditar Arena: " + arenaName);
+        String title = ChatColor.translateAlternateColorCodes('&', "&6&lArena: " + arenaName);
+        if (title.length() > 32) {
+            title = ChatColor.translateAlternateColorCodes('&', "&6&l" + arenaName);
+            if (title.length() > 32) {
+                title = title.substring(0, 32);
+            }
+        }
+        Inventory gui = Bukkit.createInventory(null, 27, title);
         
         ItemStack setSpawn1 = createMenuItem(Material.IRON_BOOTS, "&aDefinir Spawn Jogador 1", 
             "", "&7Clique para definir sua posição como spawn do jogador 1");

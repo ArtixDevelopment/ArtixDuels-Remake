@@ -41,6 +41,8 @@ public class FlatFileStatsDAO implements IStatsDAO {
         stats.setElo(config.getInt("elo", 1000));
         stats.setWinStreak(config.getInt("winStreak", 0));
         stats.setBestWinStreak(config.getInt("bestWinStreak", 0));
+        stats.setXp(config.getInt("xp", 0));
+        stats.setLevel(config.getInt("level", 1));
 
         Map<DuelMode, PlayerStats.ModeStats> modeStatsMap = new HashMap<>();
         if (config.contains("modeStats")) {
@@ -79,6 +81,8 @@ public class FlatFileStatsDAO implements IStatsDAO {
         config.set("elo", stats.getElo());
         config.set("winStreak", stats.getWinStreak());
         config.set("bestWinStreak", stats.getBestWinStreak());
+        config.set("xp", stats.getXp());
+        config.set("level", stats.getLevel());
 
         if (stats.getModeStats() != null) {
             for (Map.Entry<DuelMode, PlayerStats.ModeStats> entry : stats.getModeStats().entrySet()) {

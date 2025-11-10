@@ -1,54 +1,7 @@
 name: ArtixDuels
 version: '${project.version}'
+description: 'ArtixDuels'
+authors: [ 'Faastyzin' ]
+website: 'https://store.artixdevelopment.com'
 main: dev.artix.artixduels.ArtixDuels
 api-version: 1.13
-
-commands:
-  duelo:
-    description: Comando principal de duelos
-    usage: /<command> <jogador> [kit] [arena]
-    aliases: [duel, duelos]
-  accept:
-    description: Aceitar um convite de duelo
-    usage: /<command>
-    aliases: [aceitar]
-  deny:
-    description: Recusar um convite de duelo
-    usage: /<command>
-    aliases: [recusar]
-  stats:
-    description: Ver estatísticas de duelos
-    usage: /<command> [jogador]
-    aliases: [estatisticas, estatisticas]
-  spectate:
-    description: Espectar um duelo
-    usage: /<command> <jogador>
-    aliases: [espectar, spec]
-  history:
-    description: Ver histórico de duelos
-    usage: /<command>
-    aliases: [historico]
-  dueladmin:
-    description: Comandos administrativos de duelos
-    usage: /<command> <subcomando>
-    aliases: [dueladm, dadm]
-    permission: artixduels.admin
-  scoreboard:
-    description: Configurar modos do scoreboard
-    usage: /<command>
-    aliases: [sb, score]
-  setspawn:
-    description: Definir spawns do lobby e arenas
-    usage: /<command> <lobby|arena> [arena] [pos1|pos2]
-    aliases: [spawn]
-    permission: artixduels.admin
-  arena:
-    description: Gerenciar arenas
-    usage: /<command> <toggle|setkit> <arena> [função|kit]
-    aliases: [arenas]
-    permission: artixduels.admin
-  kit:
-    description: Gerenciar kits
-    usage: /<command> <manage|create|delete> [nome]
-    aliases: [kits]
-    permission: artixduels.admin

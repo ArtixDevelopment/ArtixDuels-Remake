@@ -90,7 +90,7 @@ public class DuelNPC {
                 lookCloseRange = lookCloseSection.getInt("range", 5);
             }
 
-            createNPC(npcName, displayName, skinName, location, lookCloseEnabled, lookCloseRange, mode);
+            createNPC(npcName, displayName, skinName, location, lookCloseEnabled, lookCloseRange, mode, npcSection);
             hologramManager.loadHolograms(config, npcName, location, mode);
             npcModes.put(npcName, mode);
         }
@@ -98,7 +98,7 @@ public class DuelNPC {
         hologramManager.startUpdateTask();
     }
 
-    private void createNPC(String name, String displayName, String skinName, Location location, boolean lookCloseEnabled, int lookCloseRange, DuelMode mode) {
+    private void createNPC(String name, String displayName, String skinName, Location location, boolean lookCloseEnabled, int lookCloseRange, DuelMode mode, ConfigurationSection npcSection) {
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
         npc.spawn(location);
 
@@ -112,8 +112,78 @@ public class DuelNPC {
         lookClose.lookClose(lookCloseEnabled);
 
         Equipment equipment = npc.getTrait(Equipment.class);
-        equipment.set(Equipment.EquipmentSlot.HAND, null);
-        equipment.set(Equipment.EquipmentSlot.OFF_HAND, null);
+        
+        // Carregar equipment do config
+        ConfigurationSection equipmentSection = npcSection.getConfigurationSection("equipment");
+        if (equipmentSection != null) {
+            // Hand
+            if (equipmentSection.contains("hand")) {
+                String handItem = equipmentSection.getString("hand");
+                if (handItem != null && !handItem.equalsIgnoreCase("null")) {
+                    equipment.set(Equipment.EquipmentSlot.HAND, parseItemStack(handItem));
+                } else {
+                    equipment.set(Equipment.EquipmentSlot.HAND, null);
+                }
+            } else {
+                equipment.set(Equipment.EquipmentSlot.HAND, null);
+            }
+            
+            // Off-hand
+            if (equipmentSection.contains("off-hand")) {
+                String offHandItem = equipmentSection.getString("off-hand");
+                if (offHandItem != null && !offHandItem.equalsIgnoreCase("null")) {
+                    equipment.set(Equipment.EquipmentSlot.OFF_HAND, parseItemStack(offHandItem));
+                } else {
+                    equipment.set(Equipment.EquipmentSlot.OFF_HAND, null);
+                }
+            } else {
+                equipment.set(Equipment.EquipmentSlot.OFF_HAND, null);
+            }
+            
+            // Helmet
+            if (equipmentSection.contains("helmet")) {
+                String helmetItem = equipmentSection.getString("helmet");
+                if (helmetItem != null && !helmetItem.equalsIgnoreCase("null")) {
+                    equipment.set(Equipment.EquipmentSlot.HELMET, parseItemStack(helmetItem));
+                } else {
+                    equipment.set(Equipment.EquipmentSlot.HELMET, null);
+                }
+            }
+            
+            // Chestplate
+            if (equipmentSection.contains("chestplate")) {
+                String chestplateItem = equipmentSection.getString("chestplate");
+                if (chestplateItem != null && !chestplateItem.equalsIgnoreCase("null")) {
+                    equipment.set(Equipment.EquipmentSlot.CHESTPLATE, parseItemStack(chestplateItem));
+                } else {
+                    equipment.set(Equipment.EquipmentSlot.CHESTPLATE, null);
+                }
+            }
+            
+            // Leggings
+            if (equipmentSection.contains("leggings")) {
+                String leggingsItem = equipmentSection.getString("leggings");
+                if (leggingsItem != null && !leggingsItem.equalsIgnoreCase("null")) {
+                    equipment.set(Equipment.EquipmentSlot.LEGGINGS, parseItemStack(leggingsItem));
+                } else {
+                    equipment.set(Equipment.EquipmentSlot.LEGGINGS, null);
+                }
+            }
+            
+            // Boots
+            if (equipmentSection.contains("boots")) {
+                String bootsItem = equipmentSection.getString("boots");
+                if (bootsItem != null && !bootsItem.equalsIgnoreCase("null")) {
+                    equipment.set(Equipment.EquipmentSlot.BOOTS, parseItemStack(bootsItem));
+                } else {
+                    equipment.set(Equipment.EquipmentSlot.BOOTS, null);
+                }
+            }
+        } else {
+            // Default: sem equipment
+            equipment.set(Equipment.EquipmentSlot.HAND, null);
+            equipment.set(Equipment.EquipmentSlot.OFF_HAND, null);
+        }
 
         npc.data().set("duel-npc", true);
         npc.data().set("duel-npc-name", name);
@@ -121,6 +191,28 @@ public class DuelNPC {
 
         npcs.put(name, npc);
         plugin.getLogger().info("NPC criado: " + name + " (Modo: " + mode.getDisplayName() + ") em " + location.toString());
+    }
+
+    private org.bukkit.inventory.ItemStack parseItemStack(String itemString) {
+        if (itemString == null || itemString.isEmpty() || itemString.equalsIgnoreCase("null")) {
+            return null;
+        }
+
+        try {
+            String[] parts = itemString.split(":");
+            String materialName = parts[0].toUpperCase();
+            org.bukkit.Material material = org.bukkit.Material.valueOf(materialName);
+            
+            short data = 0;
+            if (parts.length > 1) {
+                data = Short.parseShort(parts[1]);
+            }
+            
+            return new org.bukkit.inventory.ItemStack(material, 1, data);
+        } catch (Exception e) {
+            plugin.getLogger().warning("Erro ao parsear item: " + itemString + " - " + e.getMessage());
+            return null;
+        }
     }
 
     public void onNPCClick(Player player, NPC npc) {
@@ -139,12 +231,19 @@ public class DuelNPC {
             return;
         }
 
-        player.sendMessage("§6=== " + mode.getDisplayName() + " ===");
-        player.sendMessage("§7Use §a/duelo queue " + mode.getName().toLowerCase() + " §7para entrar na fila!");
-        player.sendMessage("§7Use §a/duelo <jogador> " + mode.getName().toLowerCase() + " §7para desafiar alguém!");
-        player.sendMessage("§7Use §a/stats §7para ver suas estatísticas!");
-        
+        // Adicionar diretamente à fila de matchmaking
+        if (duelManager.isInDuel(player)) {
+            player.sendMessage("§cVocê já está em um duelo!");
+            return;
+        }
+
+        if (duelManager.isInQueue(player)) {
+            player.sendMessage("§cVocê já está na fila de matchmaking!");
+            return;
+        }
+
         duelManager.addToMatchmaking(player, mode);
+        player.sendMessage("§aVocê entrou na fila de matchmaking para §e" + mode.getDisplayName() + "§a!");
     }
 
     public DuelMode getNPCMode(String npcName) {

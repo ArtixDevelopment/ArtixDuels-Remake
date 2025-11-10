@@ -13,6 +13,8 @@ public class PlayerStats {
     private int elo;
     private int winStreak;
     private int bestWinStreak;
+    private int xp;
+    private int level;
     private Map<DuelMode, ModeStats> modeStats;
 
     public PlayerStats(UUID playerId, String playerName) {
@@ -24,6 +26,8 @@ public class PlayerStats {
         this.elo = 1000;
         this.winStreak = 0;
         this.bestWinStreak = 0;
+        this.xp = 0;
+        this.level = 1;
         this.modeStats = new HashMap<>();
         for (DuelMode mode : DuelMode.values()) {
             modeStats.put(mode, new ModeStats());
@@ -148,6 +152,39 @@ public class PlayerStats {
 
     public void addModeKill(DuelMode mode) {
         getModeStats(mode).addKill();
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+        updateLevel();
+    }
+
+    public void addXp(int amount) {
+        this.xp += amount;
+        updateLevel();
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    private void updateLevel() {
+        int newLevel = calculateLevel(xp);
+        if (newLevel > level) {
+            level = newLevel;
+        }
+    }
+
+    private int calculateLevel(int xp) {
+        return (xp / 100) + 1;
     }
 
     public static class ModeStats {

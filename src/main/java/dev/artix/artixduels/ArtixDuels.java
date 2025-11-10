@@ -6,12 +6,16 @@ import dev.artix.artixduels.database.IDuelHistoryDAO;
 import dev.artix.artixduels.database.IStatsDAO;
 import dev.artix.artixduels.gui.ConfigGUI;
 import dev.artix.artixduels.gui.DuelModeSelectionGUI;
+import dev.artix.artixduels.gui.ProfileGUI;
 import dev.artix.artixduels.gui.ScoreboardModeSelectionGUI;
 import dev.artix.artixduels.listeners.DuelListener;
+import dev.artix.artixduels.listeners.HologramListener;
+import dev.artix.artixduels.listeners.LobbyProtectionListener;
 import dev.artix.artixduels.listeners.NPCListener;
 import dev.artix.artixduels.listeners.ProfileItemListener;
 import dev.artix.artixduels.listeners.TablistListener;
 import dev.artix.artixduels.managers.*;
+import dev.artix.artixduels.managers.HologramSystemManager;
 import dev.artix.artixduels.npcs.DuelNPC;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -40,6 +44,9 @@ public final class ArtixDuels extends JavaPlugin {
     private DuelModeSelectionGUI duelModeSelectionGUI;
     private PlayerScoreboardPreferences scoreboardPreferences;
     private ScoreboardModeSelectionGUI scoreboardModeSelectionGUI;
+    private ProfileItemListener profileItemListener;
+    private HologramSystemManager hologramSystemManager;
+    private MenuManager menuManager;
     private FileConfiguration scoreboardConfig;
     private File scoreboardFile;
     private FileConfiguration tablistConfig;
@@ -87,35 +94,41 @@ public final class ArtixDuels extends JavaPlugin {
 
         tablistManager = new TablistManager(tablistConfig, statsManager, duelManager);
 
-        configGUI = new ConfigGUI(this, kitManager, arenaManager, messageManager);
+        configGUI = new ConfigGUI(this, kitManager, arenaManager, messageManager, menuManager);
         getServer().getPluginManager().registerEvents(configGUI, this);
 
-        duelModeSelectionGUI = new DuelModeSelectionGUI(this, duelManager, kitManager, arenaManager, messageManager);
+        duelModeSelectionGUI = new DuelModeSelectionGUI(this, duelManager, kitManager, arenaManager, messageManager, menuManager);
         getServer().getPluginManager().registerEvents(duelModeSelectionGUI, this);
 
-        scoreboardModeSelectionGUI = new ScoreboardModeSelectionGUI(scoreboardPreferences, messageManager, scoreboardManager);
+        scoreboardModeSelectionGUI = new ScoreboardModeSelectionGUI(scoreboardPreferences, messageManager, scoreboardManager, menuManager);
         getServer().getPluginManager().registerEvents(scoreboardModeSelectionGUI, this);
+
+        ProfileGUI profileGUI = new ProfileGUI(statsManager, menuManager);
+        getServer().getPluginManager().registerEvents(profileGUI, this);
 
         duelNPC = new DuelNPC(this, duelManager, kitManager, arenaManager, statsManager, placeholderManager);
         duelNPC.loadNPCs(npcsConfig);
 
+        hologramSystemManager = new HologramSystemManager(this, statsManager, statsDAO);
+        hologramSystemManager.loadHolograms();
+        hologramSystemManager.startUpdateTask();
+
         startTablistUpdateTask();
 
-        getCommand("duelo").setExecutor(new DuelCommand(this, duelManager, kitManager, arenaManager, duelModeSelectionGUI));
-        getCommand("accept").setExecutor(new AcceptCommand(duelManager));
-        getCommand("deny").setExecutor(new DenyCommand(duelManager));
-        getCommand("stats").setExecutor(new StatsCommand(statsManager));
-        getCommand("spectate").setExecutor(new SpectateCommand(duelManager, spectatorManager));
-        getCommand("history").setExecutor(new HistoryCommand(historyDAO));
-        getCommand("scoreboard").setExecutor(new ScoreboardCommand(scoreboardModeSelectionGUI));
-        getCommand("dueladmin").setExecutor(new DuelAdminCommand(this, duelManager, kitManager, arenaManager, statsManager, messageManager, configGUI));
-        getCommand("setspawn").setExecutor(new dev.artix.artixduels.commands.SetSpawnCommand(this, arenaManager));
-        getCommand("arena").setExecutor(new dev.artix.artixduels.commands.ArenaCommand(arenaManager, kitManager));
-        getCommand("kit").setExecutor(new dev.artix.artixduels.commands.KitCommand(kitManager, configGUI));
+        // Registrar comandos programaticamente
+        CommandRegistry commandRegistry = new CommandRegistry(this);
+        commandRegistry.registerAllCommands();
+
+        profileItemListener = new ProfileItemListener(this, scoreboardModeSelectionGUI);
+        profileItemListener.setDuelModeSelectionGUI(duelModeSelectionGUI);
+        profileItemListener.setProfileGUI(profileGUI);
+        profileItemListener.setDuelManager(duelManager);
 
         getServer().getPluginManager().registerEvents(new DuelListener(duelManager, scoreboardManager), this);
         getServer().getPluginManager().registerEvents(new TablistListener(tablistManager), this);
-        getServer().getPluginManager().registerEvents(new ProfileItemListener(this, scoreboardModeSelectionGUI), this);
+        getServer().getPluginManager().registerEvents(profileItemListener, this);
+        getServer().getPluginManager().registerEvents(new LobbyProtectionListener(this, duelManager), this);
+        getServer().getPluginManager().registerEvents(new HologramListener(this), this);
         if (getServer().getPluginManager().getPlugin("Citizens") != null) {
             getServer().getPluginManager().registerEvents(new NPCListener(duelNPC), this);
         }
@@ -135,6 +148,9 @@ public final class ArtixDuels extends JavaPlugin {
     public void onDisable() {
         if (scoreboardManager != null) {
             scoreboardManager.clearAllScoreboards();
+        }
+        if (hologramSystemManager != null) {
+            hologramSystemManager.stopUpdateTask();
         }
         if (duelNPC != null) {
             duelNPC.removeAllNPCs();
@@ -165,8 +181,50 @@ public final class ArtixDuels extends JavaPlugin {
         return duelManager;
     }
 
+    public ScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
+    }
+
+    public ProfileItemListener getProfileItemListener() {
+        return profileItemListener;
+    }
+
+    public HologramSystemManager getHologramSystemManager() {
+        return hologramSystemManager;
+    }
+
     public DuelNPC getDuelNPC() {
         return duelNPC;
+    }
+
+    public DuelModeSelectionGUI getDuelModeSelectionGUI() {
+        return duelModeSelectionGUI;
+    }
+
+    public ScoreboardModeSelectionGUI getScoreboardModeSelectionGUI() {
+        return scoreboardModeSelectionGUI;
+    }
+
+    public ConfigGUI getConfigGUI() {
+        return configGUI;
+    }
+
+    public SpectatorManager getSpectatorManager() {
+        return spectatorManager;
+    }
+
+    public IDuelHistoryDAO getHistoryDAO() {
+        return historyDAO;
+    }
+
+    public MenuManager getMenuManager() {
+        return menuManager;
+    }
+
+    public void reloadMenuConfig() {
+        if (menuManager != null) {
+            menuManager.reloadMenuConfig();
+        }
     }
 
     private void loadScoreboardConfig() {

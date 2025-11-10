@@ -1,5 +1,6 @@
 package dev.artix.artixduels.gui;
 
+import dev.artix.artixduels.managers.MenuManager;
 import dev.artix.artixduels.managers.MessageManager;
 import dev.artix.artixduels.managers.PlayerScoreboardPreferences;
 import dev.artix.artixduels.models.DuelMode;
@@ -21,15 +22,23 @@ public class ScoreboardModeSelectionGUI implements Listener {
     private PlayerScoreboardPreferences preferences;
     private MessageManager messageManager;
     private dev.artix.artixduels.managers.ScoreboardManager scoreboardManager;
+    private MenuManager menuManager;
 
-    public ScoreboardModeSelectionGUI(PlayerScoreboardPreferences preferences, MessageManager messageManager, dev.artix.artixduels.managers.ScoreboardManager scoreboardManager) {
+    public ScoreboardModeSelectionGUI(PlayerScoreboardPreferences preferences, MessageManager messageManager, dev.artix.artixduels.managers.ScoreboardManager scoreboardManager, MenuManager menuManager) {
         this.preferences = preferences;
         this.messageManager = messageManager;
         this.scoreboardManager = scoreboardManager;
+        this.menuManager = menuManager;
     }
 
     public void openModeSelectionMenu(Player player) {
-        Inventory gui = Bukkit.createInventory(null, 54, "&6&lSelecionar Modo do Scoreboard");
+        MenuManager.MenuData menuData = menuManager.getMenu("scoreboard-mode-selection");
+        String title = menuData != null ? menuData.getTitle() : "&6&lModo Scoreboard";
+        if (title.length() > 32) {
+            title = title.substring(0, 32);
+        }
+        int size = menuData != null ? menuData.getSize() : 54;
+        Inventory gui = Bukkit.createInventory(null, size, title);
         
         dev.artix.artixduels.models.DuelMode activeMode = preferences.getPlayerActiveMode(player.getUniqueId());
         
@@ -54,9 +63,20 @@ public class ScoreboardModeSelectionGUI implements Listener {
             slot++;
         }
         
-        ItemStack closeItem = createMenuItem(Material.BARRIER, messageManager.getMessageNoPrefix("gui.close"), 
-            "", "&7Clique para fechar");
-        gui.setItem(49, closeItem);
+        // Adicionar itens do menu configurável
+        if (menuData != null) {
+            for (MenuManager.MenuItemData itemData : menuData.getItems()) {
+                ItemStack item = menuManager.createMenuItem("scoreboard-mode-selection", itemData.getName());
+                if (item != null) {
+                    gui.setItem(itemData.getSlot(), item);
+                }
+            }
+        } else {
+            // Fallback
+            ItemStack closeItem = createMenuItem(Material.BARRIER, messageManager.getMessageNoPrefix("gui.close"), 
+                "", "&7Clique para fechar");
+            gui.setItem(49, closeItem);
+        }
         
         player.openInventory(gui);
     }
@@ -68,7 +88,7 @@ public class ScoreboardModeSelectionGUI implements Listener {
         Player player = (Player) event.getWhoClicked();
         String title = event.getView().getTitle();
         
-        if (!title.contains("Selecionar Modos do Scoreboard")) {
+        if (!title.contains("Modo Scoreboard")) {
             return;
         }
         

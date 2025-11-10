@@ -245,16 +245,32 @@ public class DuelManager {
             if (winner != null) {
                 winner.sendMessage("§a§lVITÓRIA!");
                 rewardManager.giveWinRewards(winner);
+                PlayerStats winnerStats = statsManager.getPlayerStats(winner);
+                winnerStats.addXp(50);
+                statsManager.savePlayerStats(winnerStats);
                 scoreboardManager.removeScoreboard(winner);
                 scoreboardManager.createLobbyScoreboard(winner);
                 cooldownManager.setDuelCooldown(winnerId);
+                
+                dev.artix.artixduels.listeners.ProfileItemListener profileItemListener = plugin.getProfileItemListener();
+                if (profileItemListener != null) {
+                    profileItemListener.giveHotbarItems(winner);
+                }
             }
             if (loser != null) {
                 loser.sendMessage("§c§lDERROTA!");
                 rewardManager.giveLossRewards(loser);
+                PlayerStats loserStats = statsManager.getPlayerStats(loser);
+                loserStats.addXp(10);
+                statsManager.savePlayerStats(loserStats);
                 scoreboardManager.removeScoreboard(loser);
                 scoreboardManager.createLobbyScoreboard(loser);
                 cooldownManager.setDuelCooldown(loserId);
+                
+                dev.artix.artixduels.listeners.ProfileItemListener profileItemListener = plugin.getProfileItemListener();
+                if (profileItemListener != null) {
+                    profileItemListener.giveHotbarItems(loser);
+                }
             }
             statsManager.updatePlayerStats(winnerId, loserId, duel.getMode());
             
@@ -316,9 +332,13 @@ public class DuelManager {
             savedLocations.remove(playerId);
         }
         
-        // Garantir que o item do perfil esteja presente
         org.bukkit.inventory.ItemStack profileItem = dev.artix.artixduels.listeners.ProfileItemListener.createProfileItem();
+        org.bukkit.inventory.ItemStack queueItem = dev.artix.artixduels.listeners.ProfileItemListener.createQueueItem();
+        org.bukkit.inventory.ItemStack challengeItem = dev.artix.artixduels.listeners.ProfileItemListener.createChallengeItem();
+        
         player.getInventory().setItem(4, profileItem);
+        player.getInventory().setItem(0, queueItem);
+        player.getInventory().setItem(8, challengeItem);
         
         player.updateInventory();
     }
@@ -376,6 +396,13 @@ public class DuelManager {
         queue.add(player.getUniqueId());
         player.sendMessage("§aVocê entrou na fila de matchmaking para §e" + mode.getDisplayName() + "§a!");
 
+        player.getInventory().clear();
+        dev.artix.artixduels.listeners.ProfileItemListener.createLeaveQueueItem(player);
+
+        if (scoreboardManager != null) {
+            scoreboardManager.createQueueScoreboard(player, mode);
+        }
+
         if (queue.size() >= 2) {
             UUID player1Id = queue.poll();
             UUID player2Id = queue.poll();
@@ -393,15 +420,48 @@ public class DuelManager {
     }
 
     public void removeFromMatchmaking(Player player) {
+        boolean wasInQueue = false;
         for (Queue<UUID> queue : matchmakingQueuesByMode.values()) {
             if (queue.remove(player.getUniqueId())) {
-                player.sendMessage("§cVocê saiu da fila de matchmaking.");
-                return;
+                wasInQueue = true;
+                break;
             }
         }
-        if (matchmakingQueue.remove(player.getUniqueId())) {
-            player.sendMessage("§cVocê saiu da fila de matchmaking.");
+        if (!wasInQueue && matchmakingQueue.remove(player.getUniqueId())) {
+            wasInQueue = true;
         }
+        
+        if (wasInQueue) {
+            player.sendMessage("§cVocê saiu da fila de matchmaking.");
+            player.getInventory().clear();
+            
+            dev.artix.artixduels.listeners.ProfileItemListener profileItemListener = plugin.getProfileItemListener();
+            if (profileItemListener != null) {
+                profileItemListener.giveHotbarItems(player);
+            }
+            
+            if (scoreboardManager != null) {
+                scoreboardManager.createLobbyScoreboard(player);
+            }
+        }
+    }
+
+    public boolean isInQueue(Player player) {
+        for (Queue<UUID> queue : matchmakingQueuesByMode.values()) {
+            if (queue.contains(player.getUniqueId())) {
+                return true;
+            }
+        }
+        return matchmakingQueue.contains(player.getUniqueId());
+    }
+
+    public DuelMode getQueueMode(Player player) {
+        for (Map.Entry<DuelMode, Queue<UUID>> entry : matchmakingQueuesByMode.entrySet()) {
+            if (entry.getValue().contains(player.getUniqueId())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     public SpectatorManager getSpectatorManager() {

@@ -91,6 +91,10 @@ public class ArenaManager {
         return arenas.get(name);
     }
 
+    public List<String> getAllArenaNames() {
+        return new ArrayList<>(arenas.keySet());
+    }
+
     public Arena getAvailableArena() {
         for (Arena arena : availableArenas) {
             if (!arena.isInUse()) {

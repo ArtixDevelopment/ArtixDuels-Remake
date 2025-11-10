@@ -72,6 +72,10 @@ public class KitManager {
         return kits;
     }
 
+    public List<String> getAllKitNames() {
+        return new ArrayList<>(kits.keySet());
+    }
+
     public void addKit(String name, Kit kit) {
         kits.put(name, kit);
     }

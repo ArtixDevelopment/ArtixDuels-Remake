@@ -1,0 +1,17 @@
+target/
+.idea/
+*.iml
+*.class
+*.log
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+eclipse/
+.settings/
+.classpath
+.project
+*.jar
+!pom.xml
+

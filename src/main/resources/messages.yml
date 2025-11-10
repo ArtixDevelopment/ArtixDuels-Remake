@@ -1,0 +1,121 @@
+messages:
+  prefix: "&6[ArtixDuels] &r"
+  
+  duel:
+    request-sent: "&aConvite de duelo enviado para &e{target}!"
+    request-received: "&e{challenger} &adesafiou você para um duelo!"
+    request-accept-hint: "&7Use &a/accept &7para aceitar ou &c/deny &7para recusar."
+    request-accepted: "&aVocê aceitou o convite de duelo!"
+    request-denied: "&cVocê recusou o convite de duelo."
+    request-expired: "&cO convite de duelo expirou."
+    request-denied-by-target: "&c{target} recusou seu convite de duelo."
+    already-in-duel: "&cUm dos jogadores já está em um duelo!"
+    cooldown-remaining: "&cAguarde &e{seconds} &csegundos antes de enviar outro convite!"
+    
+    countdown: "&eDuelo começando em &c{countdown} &e..."
+    fight: "&a&lFIGHT!"
+    victory: "&a&lVITÓRIA!"
+    defeat: "&c&lDERROTA!"
+    draw: "&eEmpate!"
+    
+    matchmaking:
+      joined: "&aVocê entrou na fila de matchmaking para &e{mode}&a!"
+      left: "&cVocê saiu da fila de matchmaking."
+      already-in-queue: "&cVocê já está na fila de matchmaking para &e{mode}&c!"
+      already-in-queue-mode: "&cVocê já está na fila de matchmaking para &e{mode}&c!"
+      
+    rewards:
+      win: "&aVocê recebeu recompensas pela vitória!"
+      loss: "&7Você recebeu recompensas pela participação."
+      
+  error:
+    player-not-found: "&cJogador não encontrado!"
+    cannot-challenge-self: "&cVocê não pode se desafiar!"
+    no-pending-requests: "&cVocê não tem convites de duelo pendentes!"
+    challenger-offline: "&cO jogador que te desafiou não está mais online!"
+    kit-not-found: "&cKit não encontrado!"
+    arena-not-found: "&cArena não encontrada!"
+    no-arena-available: "&cNenhuma arena disponível!"
+    arena-in-use: "&cA arena está em uso!"
+    invalid-mode: "&cModo de duelo inválido! Modos disponíveis: {modes}"
+    only-players: "&cApenas jogadores podem usar este comando!"
+    no-permission: "&cVocê não tem permissão para usar este comando!"
+    invalid-location: "&cLocalização inválida!"
+    invalid-amount: "&cValor inválido!"
+    invalid-spawn-type: "&cTipo de spawn inválido! Use: 1, 2 ou spectator"
+    usage: "&cUso: {usage}"
+    not-implemented: "&cFuncionalidade ainda não implementada!"
+    
+  admin:
+    config-reloaded: "&aConfiguração recarregada!"
+    arena-created: "&aArena &e{arena} &acriada!"
+    arena-deleted: "&aArena &e{arena} &adeletada!"
+    kit-saved: "&aKit &e{kit} &asalvo!"
+    duel-forced-stop: "&aDuelo forçado a parar para &e{player}"
+    stats-reset: "&aEstatísticas de &e{player} &aresetadas!"
+    player-not-in-duel: "&cO jogador não está em um duelo!"
+    spawn-set: "&aSpawn de &e{type} &adefinido para a arena &e{arena}!"
+    
+  betting:
+    disabled: "&cSistema de apostas está desabilitado!"
+    not-enough-money: "&cVocê não tem dinheiro suficiente!"
+    target-not-enough-money: "&cO jogador não tem dinheiro suficiente para apostar!"
+    invalid-bet-amount: "&cValor da aposta deve estar entre &e{min} &ce &e{max}&c!"
+    bet-created: "&aAposta de &e{amount} &acriada! Aguardando confirmação do oponente."
+    bet-received: "&e{challenger} &adesafiou você para um duelo com aposta de &e{amount}&a!"
+    bet-accepted: "&aAposta aceita! O duelo começará em breve."
+    bet-won: "&aVocê ganhou &e{amount} &ana aposta!"
+    
+  spectator:
+    joined: "&aVocê entrou como espectador do duelo!"
+    left: "&cVocê saiu do modo espectador."
+    cannot-spectate: "&cO jogador não está em um duelo!"
+    
+  stats:
+    header: "&6=== Estatísticas de &e{player} &6==="
+    wins: "&7Vitórias: &a{wins}"
+    losses: "&7Derrotas: &c{losses}"
+    draws: "&7Empates: &e{draws}"
+    win-rate: "&7Win Rate: &b{winrate}%"
+    elo: "&7Elo: &d{elo}"
+    win-streak: "&7Sequência de Vitórias: &a{streak}"
+    best-streak: "&7Melhor Sequência: &a{best}"
+    
+  history:
+    no-history: "&cVocê não tem histórico de duelos!"
+    header: "&6=== Histórico de Duelos ==="
+    entry: "&7{index}. &e{opponent} &7- {result}"
+    entry-details: "   &7Kit: &f{kit} &7| Arena: &f{arena}"
+    entry-time: "   &7Duração: &f{duration}s &7| Data: &f{date}"
+    
+  scoreboard:
+    mode-selected: "&aModo &e{mode} &aselecionado no scoreboard!"
+    
+  gui:
+    main-menu-title: "&6&lMenu de Configuração"
+    kits-menu-title: "&6&lKits"
+    arenas-menu-title: "&6&lArenas"
+    npcs-menu-title: "&6&lNPCs"
+    modes-menu-title: "&6&lModos de Duelo"
+    
+    create-kit: "&aCriar Kit"
+    edit-kit: "&eEditar Kit"
+    delete-kit: "&cDeletar Kit"
+    create-kit-hint: "&7Use &e/dueladmin setkit <nome> &7para criar um kit com seu inventário atual"
+    
+    create-arena: "&aCriar Arena"
+    edit-arena: "&eEditar Arena"
+    delete-arena: "&cDeletar Arena"
+    set-spawn: "&bDefinir Spawn"
+    create-arena-hint: "&7Use &e/dueladmin setarena <nome> &7para criar uma arena na sua localização"
+    editing-kit: "&7Editando kit: &e{kit}"
+    
+    create-npc: "&aCriar NPC"
+    edit-npc: "&eEditar NPC"
+    delete-npc: "&cDeletar NPC"
+    
+    back: "&cVoltar"
+    close: "&cFechar"
+    next-page: "&aPróxima Página"
+    previous-page: "&ePágina Anterior"
+

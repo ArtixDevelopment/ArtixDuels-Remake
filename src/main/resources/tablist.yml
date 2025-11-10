@@ -1,0 +1,26 @@
+tablist:
+  enabled: true
+  update-interval: 20
+
+header:
+  enabled: true
+  lines:
+    - "&b&lARTIX DUELS"
+    - "&7Melhor plugin de Duels do Minecraft"
+    - ""
+
+footer:
+  enabled: true
+  lines:
+    - ""
+    - "&7Loja: &bstore.artixdevelopment.com"
+    - "&7Discord: &bdiscord.gg/artix"
+
+player-name:
+  format: "&a{player} &7({ping}ms)"
+  sort-by: "elo"
+
+player-list:
+  enabled: true
+  show-in-duel: false
+

@@ -1,0 +1,223 @@
+npcs:
+  enabled: true
+  
+  bedfight:
+    mode: "BEDFIGHT"
+    display-name: "&c&lBedFight"
+    skin: "BedFight"
+    location: "world,0,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&c&lBEDFIGHT"
+        - "&e{players-in-duel} jogando"
+  
+  stickfight:
+    mode: "STICKFIGHT"
+    display-name: "&a&lStickFight"
+    skin: "StickFight"
+    location: "world,5,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&a&lSTICKFIGHT"
+        - "&e{players-in-duel} jogando"
+  
+  soup:
+    mode: "SOUP"
+    display-name: "&b&lSoup"
+    skin: "Soup"
+    location: "world,10,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&b&lSOUP"
+        - "&e{players-in-duel} jogando"
+  
+  souprecraft:
+    mode: "SOUPRECRAFT"
+    display-name: "&d&lSoupRecraft"
+    skin: "SoupRecraft"
+    location: "world,15,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&d&lSOUPRECRAFT"
+        - "&e{players-in-duel} jogando"
+  
+  gladiator:
+    mode: "GLADIATOR"
+    display-name: "&6&lGladiator"
+    skin: "Gladiator"
+    location: "world,20,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&6&lGLADIATOR"
+        - "&e{players-in-duel} jogando"
+  
+  fastob:
+    mode: "FASTOB"
+    display-name: "&e&lFastOB"
+    skin: "FastOB"
+    location: "world,25,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&e&lFASTOB"
+        - "&e{players-in-duel} jogando"
+  
+  boxing:
+    mode: "BOXING"
+    display-name: "&c&lBoxing"
+    skin: "Boxing"
+    location: "world,30,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&c&lBOXING"
+        - "&e{players-in-duel} jogando"
+  
+  fireballfight:
+    mode: "FIREBALLFIGHT"
+    display-name: "&4&lFireballFight"
+    skin: "FireballFight"
+    location: "world,35,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&4&lFIREBALLFIGHT"
+        - "&e{players-in-duel} jogando"
+  
+  sumo:
+    mode: "SUMO"
+    display-name: "&f&lSumo"
+    skin: "Sumo"
+    location: "world,40,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&f&lSUMO"
+        - "&e{players-in-duel} jogando"
+  
+  battlerush:
+    mode: "BATTLERUSH"
+    display-name: "&5&lBattleRush"
+    skin: "BattleRush"
+    location: "world,45,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&5&lBATTLERUSH"
+        - "&e{players-in-duel} jogando"
+  
+  tntsumo:
+    mode: "TNTSUMO"
+    display-name: "&8&lTNTSumo"
+    skin: "TNTSumo"
+    location: "world,50,100,0,0,0"
+    look-close:
+      enabled: true
+      range: 2
+    equipment:
+      hand: null
+      off-hand: null
+    hologram:
+      enabled: true
+      height: 2.5
+      offset-x: 0.0
+      offset-z: 0.0
+      lines:
+        - "&8&lTNTSUMO"
+        - "&e{players-in-duel} jogando"
+

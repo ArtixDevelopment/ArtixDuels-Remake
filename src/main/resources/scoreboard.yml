@@ -1,0 +1,86 @@
+scoreboard:
+  enabled: true
+  show-in-lobby: true
+  show-in-duel: true
+
+lobby:
+  title: "&b&lDUELS"
+  update-interval: 10
+  lines:
+    - " "
+    - "&7Envie Duelos utilizando"
+    - "&b/duel <nick> &7desafiando o player"
+    - "<mode-template>"
+    - " "
+    - "&fJogadores: <players>"
+    - " "
+    - "&bstore.artixdevelopment.com"
+
+mode-template:
+  lines:
+    - " "
+    - "&b<kit-mode>"
+    - " &7Vitórias: <wins-mode>"
+    - " &fDerrotas: <loses-mode>"
+    - " &fAbates: <kills-mode>"
+
+duel:
+  title: "&b&lDUELS"
+  update-interval: 10
+  lines:
+    - " "
+    - "&a{player} &7({ping}ms)"
+    - "&c{opponent} &7({opponentping}ms)"
+    - "<IsBedFight>"
+    - "<IsFireballFight>"
+    - "<IsStickFight>"
+    - "<IsBoxing>"
+    - "<IsBattleRush>"
+    - " "
+    - "&bstore.artixdevelopment.com"
+  
+  placeholders:
+    BRIDGES-GOAL: "⬤"
+    BEDWARS-ALIVE: "&a&l✓"
+    BEDWARS-DEAD: "&c&l✗"
+  
+  modes:
+    BEDFIGHT:
+      - " "
+      - "&7Teams:"
+      - " &9[B] <bBed>"
+      - " &c[R] <rBed>"
+      - " "
+      - "&7Kills: &a<kills>"
+      - "&7Goals: &b<goals>"
+    
+    FIREBALLFIGHT:
+      - " "
+      - "&9[B] <bGoal>"
+      - "&c[R] <rGoal>"
+      - " "
+      - "&7Kills: &a<kills>"
+      - "&7Goals: &b<goals>"
+    
+    STICKFIGHT:
+      - " "
+      - "&7Lives:"
+      - " &9[B] &7<bLives>"
+      - " &c[R] &7<rLives>"
+      - " "
+      - "&7Kills: &a<kills>"
+    
+    BOXING:
+      - " "
+      - "&7Hits: <hits>"
+      - " &7You: &a<your_hits>"
+      - " &7Them: &c<opponent_hits>"
+      - " <combo>"
+    
+    BATTLERUSH:
+      - " "
+      - "&9[B] <bGoal>"
+      - "&c[R] <rGoal>"
+      - " "
+      - "&7Goals: &b<goals>"
+

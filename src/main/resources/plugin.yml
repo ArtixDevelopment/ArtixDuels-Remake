@@ -1,0 +1,39 @@
+name: ArtixDuels
+version: '${project.version}'
+main: dev.artix.artixduels.ArtixDuels
+api-version: 1.13
+
+commands:
+  duelo:
+    description: Comando principal de duelos
+    usage: /<command> <jogador> [kit] [arena]
+    aliases: [duel, duelos]
+  accept:
+    description: Aceitar um convite de duelo
+    usage: /<command>
+    aliases: [aceitar]
+  deny:
+    description: Recusar um convite de duelo
+    usage: /<command>
+    aliases: [recusar]
+  stats:
+    description: Ver estatísticas de duelos
+    usage: /<command> [jogador]
+    aliases: [estatisticas, estatisticas]
+  spectate:
+    description: Espectar um duelo
+    usage: /<command> <jogador>
+    aliases: [espectar, spec]
+  history:
+    description: Ver histórico de duelos
+    usage: /<command>
+    aliases: [historico]
+  dueladmin:
+    description: Comandos administrativos de duelos
+    usage: /<command> <subcomando>
+    aliases: [dueladm, dadm]
+    permission: artixduels.admin
+  scoreboard:
+    description: Configurar modos do scoreboard
+    usage: /<command>
+    aliases: [sb, score]

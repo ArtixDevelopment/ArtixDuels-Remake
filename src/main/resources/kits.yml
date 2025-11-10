@@ -1,0 +1,73 @@
+kits:
+  default:
+    display-name: "&aKit Padrão"
+    mode: "BEDFIGHT"
+    contents: []
+    armor: []
+  
+  bedfight:
+    display-name: "&c&lBedFight Kit"
+    mode: "BEDFIGHT"
+    contents: []
+    armor: []
+  
+  stickfight:
+    display-name: "&a&lStickFight Kit"
+    mode: "STICKFIGHT"
+    contents: []
+    armor: []
+  
+  soup:
+    display-name: "&b&lSoup Kit"
+    mode: "SOUP"
+    contents: []
+    armor: []
+  
+  souprecraft:
+    display-name: "&b&lSoupRecraft Kit"
+    mode: "SOUPRECRAFT"
+    contents: []
+    armor: []
+  
+  gladiator:
+    display-name: "&e&lGladiator Kit"
+    mode: "GLADIATOR"
+    contents: []
+    armor: []
+  
+  fastob:
+    display-name: "&d&lFastOB Kit"
+    mode: "FASTOB"
+    contents: []
+    armor: []
+  
+  boxing:
+    display-name: "&6&lBoxing Kit"
+    mode: "BOXING"
+    contents: []
+    armor: []
+  
+  fireballfight:
+    display-name: "&c&lFireballFight Kit"
+    mode: "FIREBALLFIGHT"
+    contents: []
+    armor: []
+  
+  sumo:
+    display-name: "&a&lSumo Kit"
+    mode: "SUMO"
+    contents: []
+    armor: []
+  
+  battlerush:
+    display-name: "&5&lBattleRush Kit"
+    mode: "BATTLERUSH"
+    contents: []
+    armor: []
+  
+  tntsumo:
+    display-name: "&c&lTNTSumo Kit"
+    mode: "TNTSUMO"
+    contents: []
+    armor: []
+

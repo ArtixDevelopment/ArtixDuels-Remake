@@ -1,0 +1,56 @@
+database:
+  connection-string: "mongodb://localhost:27017"
+  database-name: "artixduels"
+
+duels:
+  request-timeout: 30
+  countdown-time: 5
+  default-kit: "default"
+
+cooldowns:
+  duel: 60
+  request: 10
+
+
+rewards:
+  enabled: true
+  money: 100.0
+  exp: 50
+  win:
+    diamond:
+      type: "ITEM"
+      material: "DIAMOND"
+      chance: 50.0
+      min-amount: 1
+      max-amount: 3
+    gold:
+      type: "ITEM"
+      material: "GOLD_INGOT"
+      chance: 75.0
+      min-amount: 2
+      max-amount: 5
+  loss:
+    iron:
+      type: "ITEM"
+      material: "IRON_INGOT"
+      chance: 25.0
+      min-amount: 1
+      max-amount: 2
+
+betting:
+  enabled: false
+  min-bet: 0.0
+  max-bet: 10000.0
+
+kits:
+  default:
+    display-name: "§aKit Padrão"
+    contents: []
+    armor: []
+
+arenas:
+  arena1:
+    player1-spawn: "world,0,100,0,0,0"
+    player2-spawn: "world,10,100,10,180,0"
+    spectator-spawn: "world,5,105,5,0,0"
+

@@ -1,6 +1,6 @@
 package dev.artix.artixduels.managers;
 
-import dev.artix.artixduels.database.StatsDAO;
+import dev.artix.artixduels.database.IStatsDAO;
 import dev.artix.artixduels.models.PlayerStats;
 import org.bukkit.entity.Player;
 
@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.UUID;
 
 public class StatsManager {
-    private StatsDAO statsDAO;
+    private IStatsDAO statsDAO;
     private Map<UUID, PlayerStats> cachedStats;
 
-    public StatsManager(StatsDAO statsDAO) {
+    public StatsManager(IStatsDAO statsDAO) {
         this.statsDAO = statsDAO;
         this.cachedStats = new HashMap<>();
     }

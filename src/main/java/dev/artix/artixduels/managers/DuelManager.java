@@ -28,12 +28,12 @@ public class DuelManager {
     private BetManager betManager;
     private CooldownManager cooldownManager;
     private SpectatorManager spectatorManager;
-    private dev.artix.artixduels.database.DuelHistoryDAO historyDAO;
+    private dev.artix.artixduels.database.IDuelHistoryDAO historyDAO;
 
     public DuelManager(ArtixDuels plugin, KitManager kitManager, ArenaManager arenaManager, StatsManager statsManager,
                        ScoreboardManager scoreboardManager, RewardManager rewardManager, BetManager betManager,
                        CooldownManager cooldownManager, SpectatorManager spectatorManager,
-                       dev.artix.artixduels.database.DuelHistoryDAO historyDAO) {
+                       dev.artix.artixduels.database.IDuelHistoryDAO historyDAO) {
         this.plugin = plugin;
         this.kitManager = kitManager;
         this.arenaManager = arenaManager;

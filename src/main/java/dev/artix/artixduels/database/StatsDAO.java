@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class StatsDAO {
+public class StatsDAO implements IStatsDAO {
     private MongoCollection<Document> collection;
 
     public StatsDAO(MongoCollection<Document> collection) {

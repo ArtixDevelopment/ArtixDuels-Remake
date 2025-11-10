@@ -36,26 +36,53 @@ Um plugin completo e avançado de sistema de duelos para servidores Minecraft Sp
 - **Minecraft**: Versão 1.8.8 ou superior
 - **Servidor**: Spigot ou Paper 1.8.8+
 - **Java**: JDK 8 ou superior
-- **MongoDB**: Versão 3.12 ou superior (para armazenamento de dados)
+- **MongoDB** (Opcional): Versão 3.12 ou superior (apenas se usar MongoDB como armazenamento)
 - **Citizens** (Opcional): Para suporte a NPCs interativos
+
+### Tipos de Armazenamento
+
+O plugin suporta dois tipos de armazenamento:
+
+1. **MongoDB** (Padrão): Requer instalação e configuração do MongoDB
+2. **Flat-File** (YAML): Armazena dados em arquivos YAML, não requer banco de dados externo
 
 ## 🚀 Instalação
 
 1. Baixe a versão mais recente do plugin do [releases](https://github.com/PotDevxs/ArtixDuels/releases)
 2. Coloque o arquivo `ArtixDuels.jar` na pasta `plugins` do seu servidor
 3. Inicie o servidor para gerar os arquivos de configuração
-4. Configure o MongoDB no arquivo `config.yml`
+4. Configure o tipo de armazenamento no arquivo `config.yml`:
+   - Para usar **Flat-File** (sem MongoDB): `database.type: "flatfile"`
+   - Para usar **MongoDB**: Configure `database.type: "mongodb"` e as credenciais
 5. Reinicie o servidor
 
 ## ⚙️ Configuração
 
 ### Configuração do Banco de Dados (config.yml)
 
+O plugin suporta dois tipos de armazenamento. Configure o tipo desejado no `config.yml`:
+
+#### Usando MongoDB (Padrão)
+
 ```yaml
 database:
+  type: "mongodb"
   connection-string: "mongodb://localhost:27017"
   database-name: "artixduels"
 ```
+
+#### Usando Flat-File (YAML) - Sem necessidade de MongoDB
+
+```yaml
+database:
+  type: "flatfile"
+```
+
+Quando usar `flatfile`, os dados serão armazenados em:
+- **Estatísticas**: `plugins/ArtixDuels/stats/<UUID>.yml` (um arquivo por jogador)
+- **Histórico**: `plugins/ArtixDuels/duel_history.yml` (um arquivo único)
+
+**Nota**: O tipo pode ser `flatfile`, `flat-file` ou `file` - todos funcionam da mesma forma.
 
 ### Configuração de Duelos
 
@@ -223,8 +250,10 @@ mvn clean package
 
 ### Dependências Principais
 - **Spigot API 1.8.8-R0.1-SNAPSHOT** - API do Spigot
-- **MongoDB Java Driver 3.12.14** - Driver para MongoDB
+- **MongoDB Java Driver 3.12.14** - Driver para MongoDB (necessário apenas se usar MongoDB)
 - **Citizens 2.0.32-SNAPSHOT** (Opcional) - Para suporte a NPCs
+
+**Nota**: O MongoDB é opcional. Você pode usar o sistema Flat-File (YAML) que não requer nenhum banco de dados externo.
 
 ### Repositórios Maven
 - SpigotMC Repository
@@ -259,9 +288,16 @@ mvn clean package
 ### Problemas Comuns
 
 **O plugin não conecta ao MongoDB:**
-- Verifique se o MongoDB está rodando
+- Verifique se está usando MongoDB (tipo `mongodb` no config.yml)
+- Se não quiser usar MongoDB, altere `database.type` para `flatfile`
+- Se usar MongoDB, verifique se o MongoDB está rodando
 - Confirme a string de conexão no `config.yml`
 - Verifique as permissões de acesso ao banco de dados
+
+**Problemas com Flat-File:**
+- Verifique as permissões de escrita na pasta do plugin
+- Certifique-se de que o servidor tem permissão para criar arquivos
+- Os arquivos são criados automaticamente na primeira execução
 
 **NPCs não aparecem:**
 - Certifique-se de que o Citizens está instalado
@@ -314,5 +350,5 @@ Para suporte, reportar bugs ou sugerir features:
 
 ---
 
-**Nota**: Este plugin requer um servidor Spigot/Paper e MongoDB para funcionar corretamente. Certifique-se de que todas as dependências estão instaladas antes de usar o plugin.
+**Nota**: Este plugin requer um servidor Spigot/Paper para funcionar. O MongoDB é opcional - você pode usar o sistema Flat-File (YAML) que não requer banco de dados externo. Se optar por usar MongoDB, certifique-se de que está instalado e configurado corretamente.
 

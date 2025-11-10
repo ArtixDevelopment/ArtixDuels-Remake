@@ -2,8 +2,8 @@ package dev.artix.artixduels;
 
 import dev.artix.artixduels.commands.*;
 import dev.artix.artixduels.database.DatabaseManager;
-import dev.artix.artixduels.database.DuelHistoryDAO;
-import dev.artix.artixduels.database.StatsDAO;
+import dev.artix.artixduels.database.IDuelHistoryDAO;
+import dev.artix.artixduels.database.IStatsDAO;
 import dev.artix.artixduels.gui.ConfigGUI;
 import dev.artix.artixduels.gui.DuelModeSelectionGUI;
 import dev.artix.artixduels.gui.ScoreboardModeSelectionGUI;
@@ -22,8 +22,8 @@ import java.io.File;
 public final class ArtixDuels extends JavaPlugin {
 
     private DatabaseManager databaseManager;
-    private StatsDAO statsDAO;
-    private DuelHistoryDAO historyDAO;
+    private IStatsDAO statsDAO;
+    private IDuelHistoryDAO historyDAO;
     private StatsManager statsManager;
     private KitManager kitManager;
     private ArenaManager arenaManager;
@@ -62,8 +62,8 @@ public final class ArtixDuels extends JavaPlugin {
 
         databaseManager = new DatabaseManager(this);
         databaseManager.connect();
-        statsDAO = new StatsDAO(databaseManager.getStatsCollection());
-        historyDAO = new DuelHistoryDAO(databaseManager.getDuelHistoryCollection());
+        statsDAO = databaseManager.getStatsDAO();
+        historyDAO = databaseManager.getHistoryDAO();
         statsManager = new StatsManager(statsDAO);
 
         messageManager = new MessageManager(messagesConfig);

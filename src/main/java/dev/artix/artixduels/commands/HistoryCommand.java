@@ -1,6 +1,6 @@
 package dev.artix.artixduels.commands;
 
-import dev.artix.artixduels.database.DuelHistoryDAO;
+import dev.artix.artixduels.database.IDuelHistoryDAO;
 import dev.artix.artixduels.models.DuelHistory;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,9 +12,9 @@ import java.util.Date;
 import java.util.List;
 
 public class HistoryCommand implements CommandExecutor {
-    private DuelHistoryDAO historyDAO;
+    private IDuelHistoryDAO historyDAO;
 
-    public HistoryCommand(DuelHistoryDAO historyDAO) {
+    public HistoryCommand(IDuelHistoryDAO historyDAO) {
         this.historyDAO = historyDAO;
     }
 

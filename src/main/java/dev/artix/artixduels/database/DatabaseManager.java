@@ -10,9 +10,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class DatabaseManager {
     private ArtixDuels plugin;
+    private String storageType;
     private MongoClient mongoClient;
     private MongoDatabase database;
     private MongoCollection<Document> statsCollection;
+    private IStatsDAO statsDAO;
+    private IDuelHistoryDAO historyDAO;
 
     public DatabaseManager(ArtixDuels plugin) {
         this.plugin = plugin;
@@ -20,15 +23,26 @@ public class DatabaseManager {
 
     public void connect() {
         FileConfiguration config = plugin.getConfig();
-        String connectionString = config.getString("database.connection-string", "mongodb://localhost:27017");
-        String databaseName = config.getString("database.database-name", "artixduels");
+        storageType = config.getString("database.type", "mongodb").toLowerCase();
 
-        MongoClientURI uri = new MongoClientURI(connectionString);
-        mongoClient = new MongoClient(uri);
-        database = mongoClient.getDatabase(databaseName);
-        statsCollection = database.getCollection("player_stats");
+        if (storageType.equals("flatfile") || storageType.equals("flat-file") || storageType.equals("file")) {
+            statsDAO = new FlatFileStatsDAO(plugin);
+            historyDAO = new FlatFileDuelHistoryDAO(plugin);
+            plugin.getLogger().info("Usando armazenamento Flat-File (arquivos YAML)!");
+        } else {
+            String connectionString = config.getString("database.connection-string", "mongodb://localhost:27017");
+            String databaseName = config.getString("database.database-name", "artixduels");
 
-        plugin.getLogger().info("Conectado ao MongoDB com sucesso!");
+            MongoClientURI uri = new MongoClientURI(connectionString);
+            mongoClient = new MongoClient(uri);
+            database = mongoClient.getDatabase(databaseName);
+            statsCollection = database.getCollection("player_stats");
+
+            statsDAO = new StatsDAO(statsCollection);
+            historyDAO = new DuelHistoryDAO(database.getCollection("duel_history"));
+
+            plugin.getLogger().info("Conectado ao MongoDB com sucesso!");
+        }
     }
 
     public void disconnect() {
@@ -36,6 +50,10 @@ public class DatabaseManager {
             mongoClient.close();
             plugin.getLogger().info("Desconectado do MongoDB.");
         }
+    }
+
+    public boolean isMongoDB() {
+        return !storageType.equals("flatfile") && !storageType.equals("flat-file") && !storageType.equals("file");
     }
 
     public MongoCollection<Document> getStatsCollection() {
@@ -51,6 +69,14 @@ public class DatabaseManager {
 
     public MongoDatabase getDatabase() {
         return database;
+    }
+
+    public IStatsDAO getStatsDAO() {
+        return statsDAO;
+    }
+
+    public IDuelHistoryDAO getHistoryDAO() {
+        return historyDAO;
     }
 }
 

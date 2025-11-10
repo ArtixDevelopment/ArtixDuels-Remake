@@ -289,7 +289,7 @@ Este projeto está sob licença proprietária. Todos os direitos reservados.
 
 ## 👨‍💻 Desenvolvedor
 
-Desenvolvido por **Artix**
+Desenvolvido por **Faastyzin**
 
 ## 📞 Suporte
 

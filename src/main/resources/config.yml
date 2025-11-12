@@ -55,3 +55,21 @@ arenas:
     player2-spawn: "world,10,100,10,180,0"
     spectator-spawn: "world,5,105,5,0,0"
 
+anticheat:
+  enabled: false
+  auto-click-detection: true
+  reach-detection: true
+  movement-detection: true
+  logging-enabled: true
+  alerts-enabled: true
+  max-cps: 15
+  max-reach: 3.5
+  max-speed: 0.5
+
+reports:
+  enabled: true
+  auto-punishment: false
+  auto-punishment-threshold: 5
+  cooldown-seconds: 300
+  punishment-command: "ban %player% 7d Punição automática"
+

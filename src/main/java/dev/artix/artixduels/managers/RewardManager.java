@@ -125,17 +125,23 @@ public class RewardManager {
         }
     }
 
-    private void giveMoney(Player player, double amount) {
+    public void giveMoney(Player player, double amount) {
         try {
-            if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-                Class<?> economyClass = Class.forName("net.milkbowl.vault.economy.Economy");
-                Object economy = Bukkit.getServicesManager().getRegistration(economyClass).getProvider();
+            dev.artix.artixduels.utils.IntegrationManager integrationManager = plugin.getIntegrationManager();
+            if (integrationManager != null && integrationManager.isVaultEnabled()) {
+                Object economy = integrationManager.getVaultEconomy();
                 if (economy != null) {
+                    Class<?> economyClass = economy.getClass().getInterfaces()[0];
                     economyClass.getMethod("depositPlayer", Player.class, double.class).invoke(economy, player, amount);
+                    plugin.getLogger().fine("Recompensa de " + amount + " dada para " + player.getName() + " via Vault.");
+                } else {
+                    plugin.getLogger().warning("Vault está habilitado, mas provider de economia não está disponível.");
                 }
+            } else {
+                plugin.getLogger().fine("Vault não está disponível. Recompensas em dinheiro não serão dadas.");
             }
         } catch (Exception e) {
-            plugin.getLogger().warning("Vault não está disponível. Recompensas em dinheiro não serão dadas.");
+            plugin.getLogger().warning("Erro ao dar recompensa em dinheiro para " + player.getName() + ": " + e.getMessage());
         }
     }
 

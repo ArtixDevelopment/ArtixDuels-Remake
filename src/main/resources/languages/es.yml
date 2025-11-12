@@ -1,0 +1,55 @@
+messages:
+  prefix: "&b[ArtixDuels] &r"
+  
+  language:
+    changed: "&aIdioma cambiado a: &e{language}"
+  
+  duel:
+    request-sent: "&aSolicitud de duelo enviada a &e{target}!"
+    request-received: "&e{challenger} &ate desafió a un duelo!"
+    request-accept-hint: "&7Usa &a/accept &7para aceptar o &c/deny &7para rechazar."
+    request-accepted: "&aAceptaste la solicitud de duelo!"
+    request-denied: "&cRechazaste la solicitud de duelo."
+    request-expired: "&cLa solicitud de duelo ha expirado."
+    request-denied-by-target: "&c{target} rechazó tu solicitud de duelo."
+    already-in-duel: "&cUno de los jugadores ya está en un duelo!"
+    cooldown-remaining: "&cEspera &e{seconds} &csegundos antes de enviar otra solicitud!"
+    
+    countdown: "&eDuelo comenzando en &c{countdown} &e..."
+    fight: "&a&lFIGHT!"
+    victory: "&a&lVICTORIA!"
+    defeat: "&c&lDERROTA!"
+    draw: "&eEmpate!"
+    
+    matchmaking:
+      joined: "&aTe uniste a la cola de matchmaking para &e{mode}&a!"
+      left: "&cSaliste de la cola de matchmaking."
+      already-in-queue: "&cYa estás en la cola de matchmaking para &e{mode}&c!"
+      
+    rewards:
+      win: "&aRecibiste recompensas por ganar!"
+      loss: "&7Recibiste recompensas por participar."
+      
+  error:
+    player-not-found: "&c¡Jugador no encontrado!"
+    cannot-challenge-self: "&c¡No puedes desafiarte a ti mismo!"
+    no-pending-requests: "&c¡No tienes solicitudes de duelo pendientes!"
+    challenger-offline: "&c¡El jugador que te desafió ya no está en línea!"
+    kit-not-found: "&c¡Kit no encontrado!"
+    arena-not-found: "&c¡Arena no encontrada!"
+    no-arena-available: "&c¡No hay arena disponible!"
+    arena-in-use: "&c¡La arena está en uso!"
+    invalid-mode: "&c¡Modo de duelo inválido! Modos disponibles: {modes}"
+    only-players: "&c¡Solo los jugadores pueden usar este comando!"
+    no-permission: "&c¡No tienes permiso para usar este comando!"
+
+gui:
+  language:
+    title: "&6&lIDIOMA"
+  profile:
+    title: "&6&lPerfil"
+  dashboard:
+    title: "&6&lPanel"
+  ranking:
+    title: "&6&lClasificación"
+

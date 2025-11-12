@@ -1,0 +1,114 @@
+challenges:
+  daily_win_3:
+    name: "&eGanhe 3 Duelos"
+    description: "&7Ganhe 3 duelos para completar este desafio"
+    type: daily
+    reset-type: daily
+    objective: win_duels
+    target: 3
+    display-material: DIAMOND_SWORD
+    display-data: 0
+    priority: 1
+    rewards:
+      money: 100.0
+      xp: 50
+
+  daily_kills_10:
+    name: "&cFaça 10 Kills"
+    description: "&7Elimine 10 oponentes em duelos"
+    type: daily
+    reset-type: daily
+    objective: get_kills
+    target: 10
+    display-material: BOW
+    display-data: 0
+    priority: 2
+    rewards:
+      money: 150.0
+      xp: 75
+
+  daily_accept_5:
+    name: "&aAceite 5 Convites"
+    description: "&7Aceite 5 convites de duelo"
+    type: daily
+    reset-type: daily
+    objective: accept_duels
+    target: 5
+    display-material: PAPER
+    display-data: 0
+    priority: 3
+    rewards:
+      money: 50.0
+      xp: 25
+
+  daily_win_bedfight:
+    name: "&9Ganhe 2 BedFights"
+    description: "&7Ganhe 2 duelos no modo BedFight"
+    type: daily
+    reset-type: daily
+    objective: win_duels_mode
+    target: 2
+    mode: BedFight
+    display-material: BED
+    display-data: 0
+    priority: 4
+    rewards:
+      money: 200.0
+      xp: 100
+
+  weekly_win_20:
+    name: "&6Ganhe 20 Duelos"
+    description: "&7Ganhe 20 duelos esta semana"
+    type: weekly
+    reset-type: weekly
+    objective: win_duels
+    target: 20
+    display-material: GOLD_INGOT
+    display-data: 0
+    priority: 1
+    rewards:
+      money: 500.0
+      xp: 250
+
+  weekly_streak_5:
+    name: "&cAlcance Win Streak de 5"
+    description: "&7Alcance uma sequência de 5 vitórias"
+    type: weekly
+    reset-type: weekly
+    objective: reach_streak
+    target: 5
+    display-material: BLAZE_POWDER
+    display-data: 0
+    priority: 2
+    rewards:
+      money: 750.0
+      xp: 350
+
+  weekly_kills_50:
+    name: "&4Faça 50 Kills"
+    description: "&7Elimine 50 oponentes esta semana"
+    type: weekly
+    reset-type: weekly
+    objective: get_kills
+    target: 50
+    display-material: IRON_SWORD
+    display-data: 0
+    priority: 3
+    rewards:
+      money: 600.0
+      xp: 300
+
+  weekly_gain_elo:
+    name: "&bGanhe 100 ELO"
+    description: "&7Aumente seu ELO em 100 pontos"
+    type: weekly
+    reset-type: weekly
+    objective: gain_elo
+    target: 100
+    display-material: EMERALD
+    display-data: 0
+    priority: 4
+    rewards:
+      money: 1000.0
+      xp: 500
+

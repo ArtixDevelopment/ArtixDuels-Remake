@@ -104,5 +104,34 @@ public class FlatFileStatsDAO implements IStatsDAO {
     public void createPlayerStats(PlayerStats stats) {
         savePlayerStats(stats);
     }
+
+    @Override
+    public java.util.List<PlayerStats> getAllPlayerStats() {
+        java.util.List<PlayerStats> allStats = new java.util.ArrayList<>();
+        if (!statsFolder.exists() || !statsFolder.isDirectory()) {
+            return allStats;
+        }
+
+        File[] files = statsFolder.listFiles((dir, name) -> name.endsWith(".yml"));
+        if (files == null) {
+            return allStats;
+        }
+
+        for (File file : files) {
+            try {
+                String fileName = file.getName();
+                String uuidString = fileName.substring(0, fileName.length() - 4);
+                UUID playerId = UUID.fromString(uuidString);
+                PlayerStats stats = getPlayerStats(playerId);
+                if (stats != null) {
+                    allStats.add(stats);
+                }
+            } catch (IllegalArgumentException e) {
+                // Ignorar arquivos com nomes inválidos
+            }
+        }
+
+        return allStats;
+    }
 }
 

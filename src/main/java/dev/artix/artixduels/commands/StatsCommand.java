@@ -38,7 +38,7 @@ public class StatsCommand implements CommandExecutor {
         PlayerStats stats = statsManager.getPlayerStats(target);
         DecimalFormat df = new DecimalFormat("#.##");
 
-        sender.sendMessage("§6=== Estatísticas de §e" + stats.getPlayerName() + " §6===");
+        sender.sendMessage("§7§m----§f §bEstatísticas de §e" + stats.getPlayerName() + " §7§m----§f");
         sender.sendMessage("§7Vitórias: §a" + stats.getWins());
         sender.sendMessage("§7Derrotas: §c" + stats.getLosses());
         sender.sendMessage("§7Empates: §e" + stats.getDraws());

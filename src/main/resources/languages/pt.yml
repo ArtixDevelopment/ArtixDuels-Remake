@@ -1,0 +1,55 @@
+messages:
+  prefix: "&b[ArtixDuels] &r"
+  
+  language:
+    changed: "&aIdioma alterado para: &e{language}"
+  
+  duel:
+    request-sent: "&aConvite de duelo enviado para &e{target}!"
+    request-received: "&e{challenger} &adesafiou você para um duelo!"
+    request-accept-hint: "&7Use &a/accept &7para aceitar ou &c/deny &7para recusar."
+    request-accepted: "&aVocê aceitou o convite de duelo!"
+    request-denied: "&cVocê recusou o convite de duelo."
+    request-expired: "&cO convite de duelo expirou."
+    request-denied-by-target: "&c{target} recusou seu convite de duelo."
+    already-in-duel: "&cUm dos jogadores já está em um duelo!"
+    cooldown-remaining: "&cAguarde &e{seconds} &csegundos antes de enviar outro convite!"
+    
+    countdown: "&eDuelo começando em &c{countdown} &e..."
+    fight: "&a&lFIGHT!"
+    victory: "&a&lVITÓRIA!"
+    defeat: "&c&lDERROTA!"
+    draw: "&eEmpate!"
+    
+    matchmaking:
+      joined: "&aVocê entrou na fila de matchmaking para &e{mode}&a!"
+      left: "&cVocê saiu da fila de matchmaking."
+      already-in-queue: "&cVocê já está na fila de matchmaking para &e{mode}&c!"
+      
+    rewards:
+      win: "&aVocê recebeu recompensas pela vitória!"
+      loss: "&7Você recebeu recompensas pela participação."
+      
+  error:
+    player-not-found: "&cJogador não encontrado!"
+    cannot-challenge-self: "&cVocê não pode se desafiar!"
+    no-pending-requests: "&cVocê não tem convites de duelo pendentes!"
+    challenger-offline: "&cO jogador que te desafiou não está mais online!"
+    kit-not-found: "&cKit não encontrado!"
+    arena-not-found: "&cArena não encontrada!"
+    no-arena-available: "&cNenhuma arena disponível!"
+    arena-in-use: "&cA arena está em uso!"
+    invalid-mode: "&cModo de duelo inválido! Modos disponíveis: {modes}"
+    only-players: "&cApenas jogadores podem usar este comando!"
+    no-permission: "&cVocê não tem permissão para usar este comando!"
+
+gui:
+  language:
+    title: "&6&lIDIOMA"
+  profile:
+    title: "&6&lPerfil"
+  dashboard:
+    title: "&6&lDashboard"
+  ranking:
+    title: "&6&lRanking"
+

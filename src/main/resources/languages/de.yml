@@ -1,0 +1,55 @@
+messages:
+  prefix: "&b[ArtixDuels] &r"
+  
+  language:
+    changed: "&aSprache geändert zu: &e{language}"
+  
+  duel:
+    request-sent: "&aDuell-Anfrage an &e{target} gesendet!"
+    request-received: "&e{challenger} &ahat Sie zu einem Duell herausgefordert!"
+    request-accept-hint: "&7Verwenden Sie &a/accept &7zum Akzeptieren oder &c/deny &7zum Ablehnen."
+    request-accepted: "&aSie haben die Duell-Anfrage akzeptiert!"
+    request-denied: "&cSie haben die Duell-Anfrage abgelehnt."
+    request-expired: "&cDie Duell-Anfrage ist abgelaufen."
+    request-denied-by-target: "&c{target} hat Ihre Duell-Anfrage abgelehnt."
+    already-in-duel: "&cEiner der Spieler ist bereits in einem Duell!"
+    cooldown-remaining: "&cWarten Sie &e{seconds} &cSekunden, bevor Sie eine weitere Anfrage senden!"
+    
+    countdown: "&eDuell beginnt in &c{countdown} &e..."
+    fight: "&a&lFIGHT!"
+    victory: "&a&lSIEG!"
+    defeat: "&c&lNIEDERLAGE!"
+    draw: "&eUnentschieden!"
+    
+    matchmaking:
+      joined: "&aSie sind der Warteschlange für &e{mode}&a beigetreten!"
+      left: "&cSie haben die Warteschlange verlassen."
+      already-in-queue: "&cSie sind bereits in der Warteschlange für &e{mode}&c!"
+      
+    rewards:
+      win: "&aSie haben Belohnungen für den Sieg erhalten!"
+      loss: "&7Sie haben Belohnungen für die Teilnahme erhalten."
+      
+  error:
+    player-not-found: "&cSpieler nicht gefunden!"
+    cannot-challenge-self: "&cSie können sich nicht selbst herausfordern!"
+    no-pending-requests: "&cSie haben keine ausstehenden Duell-Anfragen!"
+    challenger-offline: "&cDer Spieler, der Sie herausgefordert hat, ist nicht mehr online!"
+    kit-not-found: "&cKit nicht gefunden!"
+    arena-not-found: "&cArena nicht gefunden!"
+    no-arena-available: "&cKeine Arena verfügbar!"
+    arena-in-use: "&cDie Arena wird verwendet!"
+    invalid-mode: "&cUngültiger Duell-Modus! Verfügbare Modi: {modes}"
+    only-players: "&cNur Spieler können diesen Befehl verwenden!"
+    no-permission: "&cSie haben keine Berechtigung, diesen Befehl zu verwenden!"
+
+gui:
+  language:
+    title: "&6&lSPRACHE"
+  profile:
+    title: "&6&lProfil"
+  dashboard:
+    title: "&6&lDashboard"
+  ranking:
+    title: "&6&lRangliste"
+

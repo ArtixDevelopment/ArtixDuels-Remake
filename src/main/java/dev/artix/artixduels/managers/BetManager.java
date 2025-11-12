@@ -115,44 +115,49 @@ public class BetManager {
 
     private boolean hasEnoughMoney(Player player, double amount) {
         try {
-            if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-                Class<?> economyClass = Class.forName("net.milkbowl.vault.economy.Economy");
-                Object economy = Bukkit.getServicesManager().getRegistration(economyClass).getProvider();
+            dev.artix.artixduels.utils.IntegrationManager integrationManager = plugin.getIntegrationManager();
+            if (integrationManager != null && integrationManager.isVaultEnabled()) {
+                Object economy = integrationManager.getVaultEconomy();
                 if (economy != null) {
+                    Class<?> economyClass = economy.getClass().getInterfaces()[0];
                     return (Boolean) economyClass.getMethod("has", Player.class, double.class).invoke(economy, player, amount);
                 }
             }
         } catch (Exception e) {
-            plugin.getLogger().warning("Vault não está disponível. Sistema de apostas não funcionará.");
+            plugin.getLogger().warning("Erro ao verificar dinheiro de " + player.getName() + ": " + e.getMessage());
         }
         return false;
     }
 
     private void takeMoney(Player player, double amount) {
         try {
-            if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-                Class<?> economyClass = Class.forName("net.milkbowl.vault.economy.Economy");
-                Object economy = Bukkit.getServicesManager().getRegistration(economyClass).getProvider();
+            dev.artix.artixduels.utils.IntegrationManager integrationManager = plugin.getIntegrationManager();
+            if (integrationManager != null && integrationManager.isVaultEnabled()) {
+                Object economy = integrationManager.getVaultEconomy();
                 if (economy != null) {
+                    Class<?> economyClass = economy.getClass().getInterfaces()[0];
                     economyClass.getMethod("withdrawPlayer", Player.class, double.class).invoke(economy, player, amount);
+                    plugin.getLogger().fine("Retirado " + amount + " de " + player.getName() + " via Vault.");
                 }
             }
         } catch (Exception e) {
-            plugin.getLogger().warning("Vault não está disponível. Sistema de apostas não funcionará.");
+            plugin.getLogger().warning("Erro ao retirar dinheiro de " + player.getName() + ": " + e.getMessage());
         }
     }
 
     private void giveMoney(Player player, double amount) {
         try {
-            if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-                Class<?> economyClass = Class.forName("net.milkbowl.vault.economy.Economy");
-                Object economy = Bukkit.getServicesManager().getRegistration(economyClass).getProvider();
+            dev.artix.artixduels.utils.IntegrationManager integrationManager = plugin.getIntegrationManager();
+            if (integrationManager != null && integrationManager.isVaultEnabled()) {
+                Object economy = integrationManager.getVaultEconomy();
                 if (economy != null) {
+                    Class<?> economyClass = economy.getClass().getInterfaces()[0];
                     economyClass.getMethod("depositPlayer", Player.class, double.class).invoke(economy, player, amount);
+                    plugin.getLogger().fine("Depositado " + amount + " para " + player.getName() + " via Vault.");
                 }
             }
         } catch (Exception e) {
-            plugin.getLogger().warning("Vault não está disponível. Sistema de apostas não funcionará.");
+            plugin.getLogger().warning("Erro ao dar dinheiro para " + player.getName() + ": " + e.getMessage());
         }
     }
 

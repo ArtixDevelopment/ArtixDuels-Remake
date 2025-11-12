@@ -140,11 +140,111 @@ public class CommandRegistry {
             Arrays.asList("lobby"), null,
             new SpawnCommand(plugin), null);
 
-        // Entrar na fila
-        registerCommand("queue", "Entrar na fila de matchmaking",
-            Arrays.asList("fila", "matchmaking"), null,
-            new QueueCommand(plugin, plugin.getDuelManager(), plugin.getDuelModeSelectionGUI()),
-            new QueueTabCompleter());
+            // Entrar na fila
+            registerCommand("queue", "Entrar na fila de matchmaking",
+                Arrays.asList("fila", "matchmaking"), null,
+                new QueueCommand(plugin, plugin.getDuelManager(), plugin.getDuelModeSelectionGUI()),
+                new QueueTabCompleter());
+
+            // Rankings
+            registerCommand("ranking", "Ver rankings e leaderboards",
+                Arrays.asList("rankings", "top", "leaderboard"), null,
+                new RankingCommand(plugin.getRankingGUI()), null);
+
+            // Desafios
+            registerCommand("challenges", "Ver desafios diários e semanais",
+                Arrays.asList("desafios", "challenge"), null,
+                new ChallengeCommand(plugin.getChallengeGUI()), null);
+
+            // Cosméticos
+            registerCommand("cosmetics", "Ver e gerenciar cosméticos",
+                Arrays.asList("cosmeticos", "cosmetic"), null,
+                new CosmeticCommand(plugin.getCosmeticGUI()), null);
+
+            // Torneios
+            registerCommand("tournament", "Ver e gerenciar torneios",
+                Arrays.asList("torneio", "torneios", "tourney"), null,
+                new TournamentCommand(plugin, plugin.getTournamentManager(), plugin.getTournamentGUI()), null);
+
+            // Replays
+            registerCommand("replay", "Ver e gerenciar replays",
+                Arrays.asList("replays", "replay"), null,
+                new ReplayCommand(plugin, plugin.getReplayManager(), plugin.getReplayGUI()), null);
+
+            // Treinamento
+            registerCommand("training", "Treinar contra bots",
+                Arrays.asList("treinar", "train", "bot"), null,
+                new TrainingCommand(plugin, plugin.getTrainingManager(), plugin.getTrainingGUI()), null);
+
+            // Dashboard de Estatísticas
+            registerCommand("dashboard", "Ver dashboard de estatísticas",
+                Arrays.asList("stats", "estatisticas", "estat"), null,
+                new DashboardCommand(plugin.getStatsDashboardGUI()), null);
+
+            // Configurações de Notificação
+            registerCommand("notifications", "Configurar notificações",
+                Arrays.asList("notif", "notificacoes", "alertas"), null,
+                new NotificationSettingsCommand(plugin.getNotificationManager()), null);
+
+            // Idioma
+            dev.artix.artixduels.gui.LanguageSelectionGUI languageGUI = 
+                new dev.artix.artixduels.gui.LanguageSelectionGUI(plugin.getLanguageManager());
+            registerCommand("language", "Selecionar idioma",
+                Arrays.asList("lang", "idioma", "idiomas"), null,
+                new LanguageCommand(plugin.getLanguageManager(), languageGUI), null);
+
+            // Editor de Arenas
+            dev.artix.artixduels.gui.ArenaEditorGUI arenaEditorGUI = 
+                new dev.artix.artixduels.gui.ArenaEditorGUI(plugin.getArenaEditor(), plugin.getArenaManager());
+            registerCommand("arenaeditor", "Editor visual de arenas",
+                Arrays.asList("arenaedit", "editarena", "editor"), "artixduels.admin",
+                new ArenaEditorCommand(plugin.getArenaEditor(), arenaEditorGUI), null);
+
+            // Editor de Kits
+            dev.artix.artixduels.gui.KitEditorGUI kitEditorGUI = 
+                new dev.artix.artixduels.gui.KitEditorGUI(plugin.getKitEditor(), plugin.getKitManager());
+            registerCommand("kiteditor", "Editor visual de kits",
+                Arrays.asList("kitedit", "editkit"), "artixduels.admin",
+                new KitEditorCommand(plugin.getKitEditor(), kitEditorGUI), null);
+
+            // Temas
+            dev.artix.artixduels.gui.ThemeSelectionGUI themeGUI = 
+                new dev.artix.artixduels.gui.ThemeSelectionGUI(plugin.getThemeManager());
+            registerCommand("theme", "Gerenciar temas visuais",
+                Arrays.asList("tema", "temas"), null,
+                new ThemeCommand(plugin.getThemeManager(), themeGUI), null);
+
+            // Conquistas
+            dev.artix.artixduels.gui.AchievementGUI achievementGUI = 
+                new dev.artix.artixduels.gui.AchievementGUI(plugin.getAchievementManager());
+            registerCommand("achievements", "Ver conquistas",
+                Arrays.asList("achievement", "conquistas", "conquista"), null,
+                new AchievementCommand(plugin.getAchievementManager(), achievementGUI), null);
+
+            // Títulos
+            dev.artix.artixduels.gui.TitleGUI titleGUI = 
+                new dev.artix.artixduels.gui.TitleGUI(plugin.getTitleManager());
+            registerCommand("title", "Gerenciar títulos",
+                Arrays.asList("titles", "titulo", "titulos"), null,
+                new TitleCommand(plugin.getTitleManager(), titleGUI), null);
+
+            // Dashboard Administrativo
+            dev.artix.artixduels.gui.AdminDashboardGUI adminDashboardGUI = 
+                new dev.artix.artixduels.gui.AdminDashboardGUI(plugin, plugin.getMetricsManager(), 
+                    plugin.getDuelManager(), plugin.getStatsManager());
+            registerCommand("admindashboard", "Dashboard administrativo",
+                Arrays.asList("dashboard", "admin"), "artixduels.admin",
+                new AdminDashboardCommand(adminDashboardGUI), null);
+
+            // Anti-Cheat
+            registerCommand("anticheat", "Gerenciar anti-cheat",
+                Arrays.asList("ac", "antitrapaça"), "artixduels.admin",
+                new AntiCheatCommand(plugin.getAntiCheatManager()), null);
+
+            // Relatórios
+            registerCommand("report", "Reportar jogador",
+                Arrays.asList("reportar", "denunciar"), null,
+                new ReportCommand(plugin.getReportManager()), null);
     }
 
     /**

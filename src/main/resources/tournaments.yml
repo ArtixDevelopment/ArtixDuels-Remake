@@ -1,0 +1,37 @@
+tournaments:
+  weekly_bedfight:
+    name: "&6Torneio Semanal BedFight"
+    description: "&7Torneio semanal de BedFight"
+    type: single_elimination
+    max-participants: 16
+    min-participants: 4
+    mode: BedFight
+    kit: default
+    rewards:
+      money: 5000.0
+      xp: 1000
+
+  daily_soup:
+    name: "&eTorneio Diário Soup"
+    description: "&7Torneio diário de Soup"
+    type: single_elimination
+    max-participants: 8
+    min-participants: 2
+    mode: Soup
+    kit: soup
+    rewards:
+      money: 2000.0
+      xp: 500
+
+  monthly_championship:
+    name: "&6&lCampeonato Mensal"
+    description: "&7O maior torneio do mês"
+    type: single_elimination
+    max-participants: 32
+    min-participants: 8
+    mode: Gladiator
+    kit: gladiator
+    rewards:
+      money: 10000.0
+      xp: 2500
+

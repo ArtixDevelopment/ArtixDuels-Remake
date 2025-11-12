@@ -40,6 +40,18 @@ public class StatsDAO implements IStatsDAO {
         collection.insertOne(doc);
     }
 
+    @Override
+    public java.util.List<PlayerStats> getAllPlayerStats() {
+        java.util.List<PlayerStats> allStats = new java.util.ArrayList<>();
+        for (Document doc : collection.find()) {
+            PlayerStats stats = documentToStats(doc);
+            if (stats != null) {
+                allStats.add(stats);
+            }
+        }
+        return allStats;
+    }
+
     private Document statsToDocument(PlayerStats stats) {
         Document doc = new Document();
         doc.append("playerId", stats.getPlayerId().toString());

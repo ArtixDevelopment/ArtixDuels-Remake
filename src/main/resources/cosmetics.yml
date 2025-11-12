@@ -1,0 +1,161 @@
+cosmetics:
+  victory_fireworks:
+    name: "&eFogos de Artifício"
+    description: "&7Fogos de artifício ao vencer"
+    type: victory_effect
+    rarity: common
+    unlocked: true
+    price: 0
+    unlock-requirement: ""
+    display-material: FIREWORK
+    display-data: 0
+    data:
+      effect: FIREWORKS_SPARK
+      count: 50
+      offset-x: 1.5
+      offset-y: 2.0
+      offset-z: 1.5
+
+  victory_hearts:
+    name: "&cCorações"
+    description: "&7Corações flutuantes ao vencer"
+    type: victory_effect
+    rarity: uncommon
+    unlocked: false
+    price: 500
+    unlock-requirement: "Ganhe 10 duelos"
+    display-material: REDSTONE
+    display-data: 0
+    data:
+      effect: HEART
+      count: 30
+      offset-x: 1.0
+      offset-y: 1.5
+      offset-z: 1.0
+
+  victory_explosion:
+    name: "&4Explosão"
+    description: "&7Explosão épica ao vencer"
+    type: victory_effect
+    rarity: epic
+    unlocked: false
+    price: 2000
+    unlock-requirement: "Ganhe 50 duelos"
+    display-material: TNT
+    display-data: 0
+    data:
+      effect: EXPLOSION_LARGE
+      count: 5
+      offset-x: 0.5
+      offset-y: 0.5
+      offset-z: 0.5
+
+  trail_redstone:
+    name: "&cRastro Vermelho"
+    description: "&7Rastro de partículas vermelhas"
+    type: trail
+    rarity: common
+    unlocked: true
+    price: 0
+    unlock-requirement: ""
+    display-material: REDSTONE
+    display-data: 0
+    data:
+      effect: REDSTONE
+      interval: 5
+
+  trail_flame:
+    name: "&6Rastro de Fogo"
+    description: "&7Rastro de chamas"
+    type: trail
+    rarity: uncommon
+    unlocked: false
+    price: 800
+    unlock-requirement: "Ganhe 25 duelos"
+    display-material: BLAZE_POWDER
+    display-data: 0
+    data:
+      effect: FLAME
+      interval: 3
+
+  trail_water:
+    name: "&bRastro de Água"
+    description: "&7Rastro de gotas d'água"
+    type: trail
+    rarity: rare
+    unlocked: false
+    price: 1500
+    unlock-requirement: "Ganhe 100 duelos"
+    display-material: WATER_BUCKET
+    display-data: 0
+    data:
+      effect: WATER_DROP
+      interval: 4
+
+  kill_explosion:
+    name: "&4Explosão de Kill"
+    description: "&7Explosão ao eliminar oponente"
+    type: kill_effect
+    rarity: common
+    unlocked: true
+    price: 0
+    unlock-requirement: ""
+    display-material: TNT
+    display-data: 0
+    data:
+      effect: EXPLOSION
+      count: 20
+
+  kill_lightning:
+    name: "&eRaio"
+    description: "&7Raio ao eliminar oponente"
+    type: kill_effect
+    rarity: epic
+    unlocked: false
+    price: 3000
+    unlock-requirement: "Faça 200 kills"
+    display-material: BLAZE_ROD
+    display-data: 0
+    data:
+      effect: SMOKE_LARGE
+      count: 30
+
+  title_warrior:
+    name: "&7Guerreiro"
+    description: "&7Título de Guerreiro"
+    type: title
+    rarity: common
+    unlocked: true
+    price: 0
+    unlock-requirement: ""
+    display-material: IRON_SWORD
+    display-data: 0
+    data:
+      prefix: "&7[Guerreiro]"
+
+  title_champion:
+    name: "&6Campeão"
+    description: "&7Título de Campeão"
+    type: title
+    rarity: rare
+    unlocked: false
+    price: 5000
+    unlock-requirement: "Ganhe 500 duelos"
+    display-material: GOLD_SWORD
+    display-data: 0
+    data:
+      prefix: "&6[Campeão]"
+
+  badge_veteran:
+    name: "&8Veterano"
+    description: "&7Badge de Veterano"
+    type: badge
+    rarity: uncommon
+    unlocked: false
+    price: 1000
+    unlock-requirement: "Jogue 100 duelos"
+    display-material: IRON_CHESTPLATE
+    display-data: 0
+    data:
+      display: "&8[V]"
+

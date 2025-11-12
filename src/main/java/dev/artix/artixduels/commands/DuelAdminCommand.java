@@ -10,7 +10,7 @@ import dev.artix.artixduels.managers.StatsManager;
 import dev.artix.artixduels.models.Arena;
 import dev.artix.artixduels.models.Kit;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

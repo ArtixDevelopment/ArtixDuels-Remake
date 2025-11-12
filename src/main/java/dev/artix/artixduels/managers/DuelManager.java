@@ -29,6 +29,14 @@ public class DuelManager {
     private CooldownManager cooldownManager;
     private SpectatorManager spectatorManager;
     private dev.artix.artixduels.database.IDuelHistoryDAO historyDAO;
+    private dev.artix.artixduels.managers.CombatAnalyzer combatAnalyzer;
+    private dev.artix.artixduels.managers.NotificationManager notificationManager;
+    private dev.artix.artixduels.managers.ChallengeManager challengeManager;
+    private dev.artix.artixduels.managers.CosmeticManager cosmeticManager;
+    private dev.artix.artixduels.managers.TournamentManager tournamentManager;
+    private dev.artix.artixduels.managers.ReplayManager replayManager;
+    private dev.artix.artixduels.managers.AchievementManager achievementManager;
+    private dev.artix.artixduels.managers.TitleManager titleManager;
 
     public DuelManager(ArtixDuels plugin, KitManager kitManager, ArenaManager arenaManager, StatsManager statsManager,
                        ScoreboardManager scoreboardManager, RewardManager rewardManager, BetManager betManager,
@@ -81,6 +89,11 @@ public class DuelManager {
         target.sendMessage("§e" + challenger.getName() + " §adesafiou você para um duelo!");
         target.sendMessage("§7Use §a/accept §7para aceitar ou §c/deny §7para recusar.");
 
+        // Notificar sobre o convite
+        if (notificationManager != null) {
+            notificationManager.notifyDuelRequest(target, request);
+        }
+
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (pendingRequests.containsKey(target.getUniqueId()) && 
                 pendingRequests.get(target.getUniqueId()).equals(request)) {
@@ -88,6 +101,10 @@ public class DuelManager {
                 challenger.sendMessage("§cO convite de duelo expirou.");
             }
         }, 6000L);
+    }
+
+    public boolean hasPendingRequest(UUID playerId) {
+        return pendingRequests.containsKey(playerId);
     }
 
     public void acceptDuelRequest(Player player) {
@@ -158,6 +175,16 @@ public class DuelManager {
         playerDuels.put(player1.getUniqueId(), duel);
         playerDuels.put(player2.getUniqueId(), duel);
 
+        // Iniciar rastreamento de combate
+        if (combatAnalyzer != null) {
+            combatAnalyzer.startTracking(duel);
+        }
+
+        // Iniciar gravação de replay
+        if (replayManager != null) {
+            replayManager.startRecording(duel);
+        }
+
         savePlayerInventory(player1);
         savePlayerInventory(player2);
         savePlayerLocation(player1);
@@ -168,6 +195,12 @@ public class DuelManager {
         giveKit(player2, kit);
 
         scoreboardManager.createDuelScoreboard(player1, player2, duel);
+        
+        // Notificar início do duelo
+        if (notificationManager != null) {
+            notificationManager.notifyDuelStart(duel);
+        }
+        
         startCountdown(duelId, player1, player2);
     }
 
@@ -244,6 +277,12 @@ public class DuelManager {
         } else {
             if (winner != null) {
                 winner.sendMessage("§a§lVITÓRIA!");
+                
+                // Executar efeito de vitória
+                if (cosmeticManager != null) {
+                    cosmeticManager.playVictoryEffect(winner);
+                }
+                
                 rewardManager.giveWinRewards(winner);
                 PlayerStats winnerStats = statsManager.getPlayerStats(winner);
                 winnerStats.addXp(50);
@@ -281,10 +320,65 @@ public class DuelManager {
                 statsManager.savePlayerStats(winnerStats);
             }
             
+            // Atualizar desafios
+            if (challengeManager != null) {
+                challengeManager.updateProgress(winnerId, dev.artix.artixduels.models.Challenge.ChallengeObjective.WIN_DUELS, 1, duel.getMode());
+                challengeManager.updateProgress(winnerId, dev.artix.artixduels.models.Challenge.ChallengeObjective.WIN_DUELS_MODE, 1, duel.getMode());
+                challengeManager.updateProgress(winnerId, dev.artix.artixduels.models.Challenge.ChallengeObjective.GET_KILLS, 1, duel.getMode());
+                challengeManager.updateProgress(winnerId, dev.artix.artixduels.models.Challenge.ChallengeObjective.GET_KILLS_MODE, 1, duel.getMode());
+                challengeManager.updateProgress(loserId, dev.artix.artixduels.models.Challenge.ChallengeObjective.PLAY_DUELS, 1, duel.getMode());
+            }
+            
+            // Processar resultado de torneio se aplicável
+            if (tournamentManager != null) {
+                dev.artix.artixduels.models.Tournament tournament = tournamentManager.getPlayerTournament(winnerId);
+                if (tournament != null && tournament.getState() == dev.artix.artixduels.models.Tournament.TournamentState.IN_PROGRESS) {
+                    tournamentManager.processMatchResult(tournament.getId(), winnerId, loserId);
+                }
+            }
+            
             betManager.processBetResult(winnerId, loserId);
         }
 
+        // Parar rastreamento de combate
+        if (combatAnalyzer != null) {
+            combatAnalyzer.stopTracking(duel);
+        }
+
+        // Parar gravação de replay
+        if (replayManager != null && !draw) {
+            replayManager.stopRecording(duel, winnerId);
+        }
+
+        // Notificar fim do duelo
+        if (notificationManager != null && !draw) {
+            notificationManager.notifyDuelEnd(duel, winnerId);
+        }
+
         saveDuelHistory(duel, winnerId, loserId, draw, duration);
+        
+        // Registrar métricas
+        if (plugin != null) {
+            dev.artix.artixduels.managers.MetricsManager metricsManager = plugin.getMetricsManager();
+            if (metricsManager != null) {
+                metricsManager.recordDuel(duel, duration);
+            }
+            
+            // Atualizar temporada
+            dev.artix.artixduels.managers.SeasonManager seasonManager = plugin.getSeasonManager();
+            if (seasonManager != null && !draw) {
+                seasonManager.updateSeasonStats(winnerId, true);
+                seasonManager.updateSeasonStats(loserId, false);
+            }
+            
+            // Adicionar XP do battle pass
+            dev.artix.artixduels.managers.BattlePassManager battlePassManager = plugin.getBattlePassManager();
+            if (battlePassManager != null && !draw) {
+                battlePassManager.addBattlePassXP(winnerId, 10);
+                battlePassManager.addBattlePassXP(loserId, 5);
+            }
+        }
+        
         spectatorManager.removeAllSpectators(duel);
         restorePlayers(winner, loser);
         cleanupDuel(duel);
@@ -501,6 +595,42 @@ public class DuelManager {
 
     public void setScoreboardManager(ScoreboardManager scoreboardManager) {
         this.scoreboardManager = scoreboardManager;
+    }
+
+    public void setCombatAnalyzer(dev.artix.artixduels.managers.CombatAnalyzer combatAnalyzer) {
+        this.combatAnalyzer = combatAnalyzer;
+    }
+
+    public void setNotificationManager(dev.artix.artixduels.managers.NotificationManager notificationManager) {
+        this.notificationManager = notificationManager;
+    }
+
+    public void setChallengeManager(dev.artix.artixduels.managers.ChallengeManager challengeManager) {
+        this.challengeManager = challengeManager;
+    }
+
+    public void setCosmeticManager(dev.artix.artixduels.managers.CosmeticManager cosmeticManager) {
+        this.cosmeticManager = cosmeticManager;
+    }
+
+    public void setTournamentManager(dev.artix.artixduels.managers.TournamentManager tournamentManager) {
+        this.tournamentManager = tournamentManager;
+    }
+
+    public void setReplayManager(dev.artix.artixduels.managers.ReplayManager replayManager) {
+        this.replayManager = replayManager;
+    }
+
+    public void setAchievementManager(dev.artix.artixduels.managers.AchievementManager achievementManager) {
+        this.achievementManager = achievementManager;
+    }
+
+    public void setTitleManager(dev.artix.artixduels.managers.TitleManager titleManager) {
+        this.titleManager = titleManager;
+    }
+
+    public ArtixDuels getPlugin() {
+        return plugin;
     }
 
     public ScoreboardManager getScoreboardManager() {

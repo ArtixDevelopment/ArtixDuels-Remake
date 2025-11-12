@@ -1,0 +1,55 @@
+messages:
+  prefix: "&b[ArtixDuels] &r"
+  
+  language:
+    changed: "&aLangue changée pour: &e{language}"
+  
+  duel:
+    request-sent: "&aDemande de duel envoyée à &e{target}!"
+    request-received: "&e{challenger} &avous a défié en duel!"
+    request-accept-hint: "&7Utilisez &a/accept &7pour accepter ou &c/deny &7pour refuser."
+    request-accepted: "&aVous avez accepté la demande de duel!"
+    request-denied: "&cVous avez refusé la demande de duel."
+    request-expired: "&cLa demande de duel a expiré."
+    request-denied-by-target: "&c{target} a refusé votre demande de duel."
+    already-in-duel: "&cUn des joueurs est déjà en duel!"
+    cooldown-remaining: "&cAttendez &e{seconds} &csecondes avant d'envoyer une autre demande!"
+    
+    countdown: "&eDuel commençant dans &c{countdown} &e..."
+    fight: "&a&lFIGHT!"
+    victory: "&a&lVICTOIRE!"
+    defeat: "&c&lDÉFAITE!"
+    draw: "&eMatch nul!"
+    
+    matchmaking:
+      joined: "&aVous avez rejoint la file d'attente pour &e{mode}&a!"
+      left: "&cVous avez quitté la file d'attente."
+      already-in-queue: "&cVous êtes déjà dans la file d'attente pour &e{mode}&c!"
+      
+    rewards:
+      win: "&aVous avez reçu des récompenses pour avoir gagné!"
+      loss: "&7Vous avez reçu des récompenses pour avoir participé."
+      
+  error:
+    player-not-found: "&cJoueur introuvable!"
+    cannot-challenge-self: "&cVous ne pouvez pas vous défier vous-même!"
+    no-pending-requests: "&cVous n'avez pas de demandes de duel en attente!"
+    challenger-offline: "&cLe joueur qui vous a défié n'est plus en ligne!"
+    kit-not-found: "&cKit introuvable!"
+    arena-not-found: "&cArène introuvable!"
+    no-arena-available: "&cAucune arène disponible!"
+    arena-in-use: "&cL'arène est en cours d'utilisation!"
+    invalid-mode: "&cMode de duel invalide! Modes disponibles: {modes}"
+    only-players: "&cSeuls les joueurs peuvent utiliser cette commande!"
+    no-permission: "&cVous n'avez pas la permission d'utiliser cette commande!"
+
+gui:
+  language:
+    title: "&6&lLANGUE"
+  profile:
+    title: "&6&lProfil"
+  dashboard:
+    title: "&6&lTableau de bord"
+  ranking:
+    title: "&6&lClassement"
+

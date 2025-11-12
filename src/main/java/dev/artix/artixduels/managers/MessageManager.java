@@ -73,5 +73,11 @@ public class MessageManager {
         messages.clear();
         loadMessages();
     }
+
+    public void reload(FileConfiguration newConfig) {
+        this.messagesConfig = newConfig;
+        messages.clear();
+        loadMessages();
+    }
 }
 

@@ -1,0 +1,55 @@
+messages:
+  prefix: "&b[ArtixDuels] &r"
+  
+  language:
+    changed: "&aLanguage changed to: &e{language}"
+  
+  duel:
+    request-sent: "&aDuel request sent to &e{target}!"
+    request-received: "&e{challenger} &achallenged you to a duel!"
+    request-accept-hint: "&7Use &a/accept &7to accept or &c/deny &7to decline."
+    request-accepted: "&aYou accepted the duel request!"
+    request-denied: "&cYou declined the duel request."
+    request-expired: "&cThe duel request has expired."
+    request-denied-by-target: "&c{target} declined your duel request."
+    already-in-duel: "&cOne of the players is already in a duel!"
+    cooldown-remaining: "&cWait &e{seconds} &cseconds before sending another request!"
+    
+    countdown: "&eDuel starting in &c{countdown} &e..."
+    fight: "&a&lFIGHT!"
+    victory: "&a&lVICTORY!"
+    defeat: "&c&lDEFEAT!"
+    draw: "&eDraw!"
+    
+    matchmaking:
+      joined: "&aYou joined the matchmaking queue for &e{mode}&a!"
+      left: "&cYou left the matchmaking queue."
+      already-in-queue: "&cYou are already in the matchmaking queue for &e{mode}&c!"
+      
+    rewards:
+      win: "&aYou received rewards for winning!"
+      loss: "&7You received rewards for participating."
+      
+  error:
+    player-not-found: "&cPlayer not found!"
+    cannot-challenge-self: "&cYou cannot challenge yourself!"
+    no-pending-requests: "&cYou have no pending duel requests!"
+    challenger-offline: "&cThe player who challenged you is no longer online!"
+    kit-not-found: "&cKit not found!"
+    arena-not-found: "&cArena not found!"
+    no-arena-available: "&cNo arena available!"
+    arena-in-use: "&cThe arena is in use!"
+    invalid-mode: "&cInvalid duel mode! Available modes: {modes}"
+    only-players: "&cOnly players can use this command!"
+    no-permission: "&cYou do not have permission to use this command!"
+
+gui:
+  language:
+    title: "&6&lLANGUAGE"
+  profile:
+    title: "&6&lProfile"
+  dashboard:
+    title: "&6&lDashboard"
+  ranking:
+    title: "&6&lRanking"
+

@@ -34,6 +34,12 @@ public class DuelListener implements Listener {
         if (scoreboardManager != null && !duelManager.isInDuel(player)) {
             scoreboardManager.createLobbyScoreboard(player);
         }
+        
+        dev.artix.artixduels.managers.CosmeticManager cosmeticManager = 
+            duelManager.getPlugin().getCosmeticManager();
+        if (cosmeticManager != null && !duelManager.isInDuel(player)) {
+            cosmeticManager.startTrail(player);
+        }
     }
 
     @EventHandler
@@ -49,6 +55,14 @@ public class DuelListener implements Listener {
         if (killer != null && duel.isPlayer(killer.getUniqueId())) {
             event.setKeepInventory(true);
             event.getDrops().clear();
+            
+            // Executar efeito de kill
+            dev.artix.artixduels.managers.CosmeticManager cosmeticManager = 
+                duelManager.getPlugin().getCosmeticManager();
+            if (cosmeticManager != null) {
+                cosmeticManager.playKillEffect(killer, player);
+            }
+            
             duelManager.endDuel(killer.getUniqueId(), player.getUniqueId(), false);
         }
     }
@@ -69,6 +83,12 @@ public class DuelListener implements Listener {
             }
         }
         duelManager.removeFromMatchmaking(player);
+        
+        dev.artix.artixduels.managers.CosmeticManager cosmeticManager = 
+            duelManager.getPlugin().getCosmeticManager();
+        if (cosmeticManager != null) {
+            cosmeticManager.stopTrail(player);
+        }
     }
 
     @EventHandler
